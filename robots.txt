@@ -1,0 +1,3 @@
+# Versão de teste: o Google não deve mostrar este endereço.
+User-agent: *
+Disallow: /
