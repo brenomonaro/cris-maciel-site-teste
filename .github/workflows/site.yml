@@ -58,6 +58,13 @@ jobs:
             echo "Ainda não há imóveis da Kenlo guardados: o site sai com os exemplos."
           fi
 
+      - name: Gerar a página própria de cada imóvel
+        env:
+          SITE_URL: https://brenomonaro.github.io/cris-maciel-site-teste
+        run: |
+          mkdir -p _dados
+          node scripts/paginas.mjs _dados
+
       - name: Montar o site
         run: |
           mkdir _site

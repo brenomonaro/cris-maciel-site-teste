@@ -6438,7 +6438,10 @@ function exemplos(){
       area:o.area,terreno:o.terreno,dorm:o.dorm,suites:o.suites,banh:0,vagas:o.vagas,preco:o.preco,cond:o.cond,iptu:o.iptu,
       fotos:fotos,carac:tags.map(function(t){return CARAC[t];}).filter(Boolean),op:o.op,novo:tags.indexOf('novo')>=0,destaque:!!DESTAQ[o.cod],
       data:d.toISOString().slice(0,10),pos:o.pos};
-  });
+  }).concat([{cod:'EX0001',fin:'venda',tipo:'Casa em condomínio',bairro:'Parque Villa dos Pinheiros',regiao:'',cidade:'Indaiatuba',
+      titulo:'Casa em condomínio com 4 suítes',descricao:'',area:372,terreno:450,dorm:4,suites:4,banh:6,vagas:4,preco:3890000,cond:790,iptu:6480,
+      fotos:['lx-media/imoveis/ex-pinheiros/f53.webp'],nfotos:50,carac:['Piscina','Espaço gourmet'],op:'',novo:true,destaque:true,data:'2026-10-08',
+      pagina:'imovel/EX0001/index.html'}]);
 }
 var IMOVEIS=[], PORCOD={}, BAIRROS={};
 function carregar(lista){ IMOVEIS=lista; PORCOD={}; IMOVEIS.forEach(function(i){ PORCOD[i.cod]=i; }); montaOpcoes(); lista_(); destaques(); }
@@ -6475,6 +6478,9 @@ function guardaSalvos(){ try{ localStorage.setItem('cm-salvos',JSON.stringify(SA
 function nSalvos(){ return Object.keys(SALVOS).filter(function(c){return PORCOD[c];}).length; }
 
 /* ---------- cartão ---------- */
+/* página própria (imovel/CODIGO/) quando o site é gerado pelo GitHub com os imóveis da Kenlo; senão, a ficha dentro do site */
+function paginaPropria(i){ return i.pagina || (API && /\.json(\?|$)/.test(API) ? 'imovel/'+String(i.cod).replace(/[^A-Za-z0-9_-]/g,'_')+'/' : ''); }
+function linkImovel(i){ return paginaPropria(i) || '?imovel='+encodeURIComponent(i.cod)+'#imovel'; }
 function cartao(i){
   var a=document.createElement('article'); a.className='ct-card';
   a.innerHTML='<div class="ct-foto"><i style="background-image:url(\''+esc(i.fotos[0]||'')+'\')"></i>'+
@@ -6483,7 +6489,7 @@ function cartao(i){
     '<button class="ct-salvar" type="button" data-salvar="'+esc(i.cod)+'" aria-pressed="'+(SALVOS[i.cod]?'true':'false')+'" aria-label="Salvar este imóvel">'+IC.coracao+'</button>'+
     '<div class="ct-corpo"><span class="ct-onde">'+esc(onde(i))+'</span><h3>'+esc(i.titulo)+'</h3><ul class="ct-specs">'+specs(i)+'</ul>'+
     '<div class="ct-pe"><span class="ct-preco">'+precoHtml(i)+'</span><span class="ct-cod">Cód. '+esc(i.cod)+'</span></div></div>'+
-    '<a class="ct-cobre" href="?imovel='+encodeURIComponent(i.cod)+'#imovel" data-cod="'+esc(i.cod)+'" aria-label="'+esc(i.titulo)+', '+esc(onde(i))+', código '+esc(i.cod)+'"></a>';
+    '<a class="ct-cobre" href="'+esc(linkImovel(i))+'"'+(paginaPropria(i)?'':' data-cod="'+esc(i.cod)+'"')+' aria-label="'+esc(i.titulo)+', '+esc(onde(i))+', código '+esc(i.cod)+'"></a>';
   return a;
 }
 

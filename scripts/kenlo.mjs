@@ -2,7 +2,7 @@
 // Roda no GitHub Actions (.github/workflows/site.yml) a cada 30 minutos. A chave vem dos segredos do repositório
 // (Settings > Secrets and variables > Actions): KENLO_API_KEY e KENLO_USER_INFO. Nunca escreva a chave aqui.
 // Gera: imoveis.json (lista leve, só a foto de capa) e imovel/CODIGO.json (o imóvel completo, para a ficha).
-// Nunca saem: corretor, proprietário, rua, número, CEP e coordenadas. O site mostra só o bairro.
+// Nunca saem: contato do corretor, proprietário, rua, número, CEP e coordenadas. Do corretor sai só o primeiro nome. O site mostra só o bairro.
 // Mesma tradução de campos de supabase/functions/imoveis/index.ts.
 const BASE = "https://imob-api.kenlo-open.com";
 const TIPOS = {
@@ -155,7 +155,9 @@ function converte(a) {
     op: "",
     novo: criado ? Date.now() - Date.parse(criado) < 45 * 864e5 : false,
     destaque: d.highlightLevel === "FEATURED" || feats.includes("FEATURED") || feats.includes("SUPER_FEATURED"),
-    data: criado
+    data: criado,
+    // só o primeiro nome do corretor que captou; e-mail e telefone nunca saem
+    corretor: String((Array.isArray(a.brokersCaptured) ? a.brokersCaptured[0]?.name : a.brokersCaptured?.name) || "").trim().split(/\s+/)[0] || ""
   };
 }
 function leve(i) {

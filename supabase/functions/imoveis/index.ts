@@ -26,7 +26,7 @@ type Imovel = {
   cod: string; fin: "venda" | "locacao"; tipo: string; bairro: string; regiao: string; cidade: string;
   titulo: string; descricao: string; area: number; terreno: number; dorm: number; suites: number; banh: number; vagas: number;
   preco: number; precoAluguel: number; cond: number; iptu: number; fotos: string[]; nfotos: number; video: string;
-  carac: string[]; extras: string[]; op: string; novo: boolean; destaque: boolean; data: string; parcial?: boolean;
+  carac: string[]; extras: string[]; op: string; novo: boolean; destaque: boolean; data: string; corretor: string; parcial?: boolean;
 };
 
 const TIPOS: Record<string, string> = {
@@ -102,6 +102,8 @@ function converte(a: any): Imovel {
     op: "", novo: criado ? Date.now() - Date.parse(criado) < 45 * 864e5 : false,
     destaque: d.highlightLevel === "FEATURED" || feats.includes("FEATURED") || feats.includes("SUPER_FEATURED"),
     data: criado,
+    // só o primeiro nome do corretor que captou; e-mail e telefone nunca saem
+    corretor: String((Array.isArray(a.brokersCaptured) ? a.brokersCaptured[0]?.name : a.brokersCaptured?.name) || "").trim().split(/\s+/)[0] || "",
   };
 }
 
