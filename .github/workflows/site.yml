@@ -61,7 +61,7 @@ jobs:
       - name: Montar o site
         run: |
           mkdir _site
-          cp -r index.html lx-media robots.txt og-image.png .nojekyll _site/
+          cp -r index.html 404.html lx-media robots.txt og-image.png .nojekyll _site/
           if [ -d _dados ]; then cp -r _dados/. _site/; fi
 
       - uses: actions/upload-pages-artifact@v3
