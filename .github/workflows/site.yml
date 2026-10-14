@@ -1,0 +1,72 @@
+# Publica o site no GitHub Pages e atualiza os imóveis da Kenlo a cada 30 minutos.
+# A chave da Kenlo fica nos segredos do repositório (Settings > Secrets and variables > Actions):
+#   KENLO_API_KEY e KENLO_USER_INFO. Sem eles, o site sai com os imóveis de exemplo.
+# Os últimos imóveis que deram certo ficam guardados no ramo "dados". Se a Kenlo falhar, o site usa esses.
+# Em Settings > Pages, "Source" precisa estar em "GitHub Actions".
+name: Site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: site
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Buscar os imóveis na Kenlo
+        env:
+          KENLO_API_KEY: ${{ secrets.KENLO_API_KEY }}
+          KENLO_USER_INFO: ${{ secrets.KENLO_USER_INFO }}
+        run: node scripts/kenlo.mjs _dados
+
+      - name: Guardar os imóveis novos ou usar os últimos que deram certo
+        run: |
+          if [ -f _dados/imoveis.json ]; then
+            cd _dados
+            git init -q -b dados
+            git add -A
+            git -c user.name="Site Cris Maciel" -c user.email="site@users.noreply.github.com" commit -qm "Imóveis da Kenlo"
+            git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" dados
+            rm -rf .git
+            cd ..
+          elif git fetch -q origin dados 2>/dev/null; then
+            mkdir -p _dados
+            git archive origin/dados | tar -x -C _dados
+            echo "Usando os últimos imóveis guardados."
+          else
+            echo "Ainda não há imóveis da Kenlo guardados: o site sai com os exemplos."
+          fi
+
+      - name: Montar o site
+        run: |
+          mkdir _site
+          cp -r index.html lx-media robots.txt og-image.png .nojekyll _site/
+          if [ -d _dados ]; then cp -r _dados/. _site/; fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

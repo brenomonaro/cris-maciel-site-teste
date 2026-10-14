@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta name="robots" content="noindex, nofollow" data-fixo>
-<meta name="cm-api" content="">
+<meta name="cm-api" content="imoveis.json">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Consultoria imobiliária em Indaiatuba. Desde 2013 conduzindo compra, venda e locação com a calma que uma decisão de vida exige.">
@@ -6329,28 +6329,40 @@ var pend=false;window.addEventListener('scroll',function(){if(pend)return;pend=t
 var WA='5519992754241';
 
 /* ---------- adaptador da Kenlo (provisório: conferir nomes dos campos) ---------- */
-function num(v){ if(v==null||v==='') return 0; if(typeof v==='number') return v; var n=parseFloat(String(v).replace(/\./g,'').replace(',','.')); return isNaN(n)?0:n; }
+function num(v){ if(v==null||v==='') return 0; if(typeof v==='number') return v; if(typeof v==='object') return num(v.value); var t=String(v).trim(); if(/^-?\d+(\.\d+)?$/.test(t)) return parseFloat(t); var n=parseFloat(t.replace(/\./g,'').replace(',','.')); return isNaN(n)?0:n; }
+/* Kenlo Open API v2 (https://kenlo-open-api-prd.kenlo.io/docs/v2.html). A função do Supabase junta o anúncio
+   (GET /v2/listings) com o imóvel do CRM (GET /v2/properties) e tira os dados pessoais. Aqui cada item vira o
+   formato interno do catálogo. Os nomes antigos (v1/XML) continuam aceitos. A própria Kenlo avisa que a forma
+   das fotos ainda não foi medida: conferir com ?diag=1 na função antes de dar por certo. */
+var KENLO_CARAC={SWIMMING_POOL:'Piscina',POOL:'Piscina',PET_FRIENDLY:'Aceita pet',PETS_ALLOWED:'Aceita pet',GYM:'Academia',FURNISHED:'Mobiliado',BACKYARD:'Quintal',GARDEN:'Jardim',BARBECUE_GRILL:'Churrasqueira',GOURMET_AREA:'Área gourmet',PLAYGROUND:'Playground',SECURITY_24H:'Portaria 24 horas',ELEVATOR:'Elevador',BALCONY:'Varanda',PARTY_ROOM:'Salão de festas',SPORTS_COURT:'Quadra'};
+function fotoUrl(f){ if(!f) return ''; if(typeof f==='string') return f; return f.big||f.serving||f.url||f.Foto||f.URL||f.small||''; }
 function deKenlo(k){
-  var venda = /venda/i.test(k.Finalidade||k.finalidade||'') || num(k.ValorVenda||k.valorVenda)>0;
+  if(k && k.cod && k.fin && Array.isArray(k.fotos)) return k; /* já veio traduzido pela função do Supabase */
+  var det=k.details||{}, pr=k.price||{}, pg=k.pricing||det.pricing||{}, ar=k.area||det.area||{}, dt=k.detail||det, ad=k.address||det.location||{};
+  var venda=num(pr.saleValue||pg.salePrice||k.ValorVenda||k.valorVenda), loc=num(pr.rentalValue||pg.rentalPrice||pg.rentPrice||k.ValorLocacao||k.valorLocacao);
+  var fin=/RENT|aluguel|loca/i.test(k.purpose||k.Finalidade||k.finalidade||'') && !venda ? 'locacao' : (venda>0 || /venda|SALE/i.test(k.purpose||k.Finalidade||'') ? 'venda' : (loc>0?'locacao':'venda'));
+  var fotos=[].concat(k.photos||[], (k.media&&k.media.image)||[], Array.isArray(k.media)?k.media:[], k.Fotos||k.fotos||[]);
+  fotos.sort(function(a,b){ return (b&&b.isPrimary?1:0)-(a&&a.isPrimary?1:0); });
+  var carac=[].concat(det.features||k.features||[]).map(function(c){ return KENLO_CARAC[c]||''; }).filter(Boolean).concat(k.Caracteristicas||k.caracteristicas||[]);
   return {
-    cod: String(k.Codigo||k.codigo||k.id||''),
-    fin: venda ? 'venda' : 'locacao',
-    tipo: k.Categoria||k.TipoImovel||k.tipo||'Imóvel',
-    bairro: k.Bairro||k.bairro||'',
+    cod: String(k.propertyCode||k.Codigo||k.codigo||k.id||''),
+    fin: fin,
+    tipo: k.typeName||det.propertyType&&({APARTMENT:'Apartamento',HOUSE:'Casa',CONDOMINIUM_HOUSE:'Casa em condomínio',LAND:'Terreno',TOWNHOUSE:'Sobrado'})[det.propertyType]||k.Categoria||k.TipoImovel||k.tipo||'Imóvel',
+    bairro: ad.neighborhood||k.Bairro||k.bairro||'',
     regiao: '',
-    cidade: k.Cidade||k.cidade||'Indaiatuba',
-    titulo: k.TituloSite||k.Titulo||k.titulo||'',
-    descricao: k.DescricaoWeb||k.Descricao||k.descricao||'',
-    area: num(k.AreaPrivativa||k.AreaUtil||k.areaUtil||k.AreaConstruida),
-    terreno: num(k.AreaTerreno||k.AreaTotal||k.areaTerreno),
-    dorm: num(k.Dormitorios||k.dormitorios), suites: num(k.Suites||k.suites),
-    banh: num(k.BanheiroSocialQtd||k.Banheiros||k.banheiros), vagas: num(k.Vagas||k.vagas),
-    preco: num(venda ? (k.ValorVenda||k.valorVenda) : (k.ValorLocacao||k.valorLocacao)),
-    cond: num(k.ValorCondominio||k.valorCondominio), iptu: num(k.ValorIptu||k.valorIptu),
-    fotos: (k.Fotos||k.fotos||[]).map(function(f){ return typeof f==='string' ? f : (f.Foto||f.url||f.URL||''); }).filter(Boolean),
-    carac: (k.Caracteristicas||k.caracteristicas||[]),
+    cidade: ad.city||k.Cidade||k.cidade||'Indaiatuba',
+    titulo: k.title||k.TituloSite||k.Titulo||k.titulo||'',
+    descricao: k.description||det.description||k.DescricaoWeb||k.Descricao||k.descricao||'',
+    area: num(ar.usableArea||ar.valueUsable||k.AreaPrivativa||k.AreaUtil||k.areaUtil||k.AreaConstruida),
+    terreno: num(ar.totalArea||ar.valueTotal||k.AreaTerreno||k.AreaTotal||k.areaTerreno),
+    dorm: num(dt.bedrooms||k.Dormitorios||k.dormitorios), suites: num(dt.suites||k.Suites||k.suites),
+    banh: num(dt.bathrooms||k.BanheiroSocialQtd||k.Banheiros||k.banheiros), vagas: num(dt.garages||(det.garage&&det.garage.value)||k.Vagas||k.vagas),
+    preco: fin==='venda' ? venda : loc,
+    cond: num(pr.condoFee||pg.condoPrice||k.ValorCondominio||k.valorCondominio), iptu: num(pr.iptuValue||k.ValorIptu||k.valorIptu),
+    fotos: fotos.map(fotoUrl).filter(Boolean),
+    carac: carac.filter(function(c,i,a){ return a.indexOf(c)===i; }),
     op: '', novo: !!(k.Lancamento||k.novo), destaque: !!(k.DestaqueWeb||k.destaque),
-    data: k.DataCadastro||k.dataCadastro||''
+    data: k.createdAt||det.createAt||k.DataCadastro||k.dataCadastro||''
   };
 }
 
@@ -6448,7 +6460,7 @@ function cartao(i){
   var a=document.createElement('article'); a.className='ct-card';
   a.innerHTML='<div class="ct-foto"><i style="background-image:url(\''+esc(i.fotos[0]||'')+'\')"></i>'+
     '<span class="ct-selos"><span class="ct-selo">'+(i.fin==='locacao'?'Aluguel':'Venda')+'</span>'+(i.novo?'<span class="ct-selo ct-selo--novo">Novo</span>':'')+'</span>'+
-    (i.fotos.length>1?'<span class="ct-nfotos">'+IC.fotos+i.fotos.length+'</span>':'')+'</div>'+
+    ((i.nfotos||i.fotos.length)>1?'<span class="ct-nfotos">'+IC.fotos+(i.nfotos||i.fotos.length)+'</span>':'')+'</div>'+
     '<button class="ct-salvar" type="button" data-salvar="'+esc(i.cod)+'" aria-pressed="'+(SALVOS[i.cod]?'true':'false')+'" aria-label="Salvar este imóvel">'+IC.coracao+'</button>'+
     '<div class="ct-corpo"><span class="ct-onde">'+esc(onde(i))+'</span><h3>'+esc(i.titulo)+'</h3><ul class="ct-specs">'+specs(i)+'</ul>'+
     '<div class="ct-pe"><span class="ct-preco">'+precoHtml(i)+'</span><span class="ct-cod">Cód. '+esc(i.cod)+'</span></div></div>'+
@@ -6460,7 +6472,7 @@ function cartao(i){
 var pag=document.getElementById('imoveis');
 var F={fin:'venda',tipo:'',bairro:'',dorm:0,max:0,cod:'',suites:0,vagas:0,area:0,carac:[],salvos:false,ordem:'recentes'};
 var POR_PAG=12, mostrando=POR_PAG;
-var FAIXAS={venda:[0,1000000,1200000,1500000,2000000,3000000,5000000],locacao:[0,2000,3000,4000,6000,10000]};
+var FAIXAS={venda:[0,500000,800000,1000000,1200000,1500000,2000000,3000000,5000000],locacao:[0,2000,3000,4000,6000,10000]};
 function faixaTxt(v,fin){ if(!v) return 'Qualquer valor'; if(fin==='locacao') return 'R$ '+v.toLocaleString('pt-BR')+' /mês'; return v>=1000000?'R$ '+(v/1e6).toLocaleString('pt-BR')+(v<2000000?' milhão':' milhões'):'R$ '+(v/1000)+' mil'; }
 function sel(k){ return pag?pag.querySelector('[data-f="'+k+'"]'):null; }
 function montaOpcoes(){
@@ -6556,7 +6568,8 @@ var atual=null;
 function ficha(cod){
   var i=PORCOD[cod]||atual||IMOVEIS.filter(function(x){return x.destaque;})[0]||IMOVEIS[0]; if(!i) return; atual=i;
   var box=document.getElementById('ct-ficha'); if(!box) return;
-  var fs=i.fotos, n=fs.length;
+  if(i.parcial) completa(i);
+  var fs=i.fotos, n=i.nfotos||fs.length;
   var gal='<div class="ct-galeria'+(n<3?' ct-galeria--1':'')+'">'+fs.slice(0,n<3?1:5).map(function(f,k){return '<button type="button" data-ct-foto="'+k+'" aria-label="Ampliar foto '+(k+1)+' de '+n+'"><i style="background-image:url(\''+esc(f)+'\')"></i></button>';}).join('')+
     (n>1?'<span class="ct-todas">'+IC.fotos+'Ver as '+n+' fotos</span>':'')+'</div>';
   var nums=[];
@@ -6585,7 +6598,8 @@ function ficha(cod){
       (nums.length?'<div class="ct-numeros">'+nums.map(function(x){return '<div>'+x[0]+'<b>'+x[1]+'</b><span>'+x[2]+'</span></div>';}).join('')+'</div>':'')+
       '<section class="ct-bloco ct-desc"><h2>Sobre o imóvel</h2>'+desc+'</section>'+
       (i.op?'<section class="ct-bloco"><h2>A nossa opinião</h2><div class="ct-op"><p>'+esc(i.op)+'</p><small>Escrito por quem visitou o imóvel.</small></div></section>':'')+
-      (i.carac.length?'<section class="ct-bloco"><h2>Características</h2><ul class="ct-lista">'+i.carac.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul></section>':'')+
+      (i.carac.length||(i.extras||[]).length?'<section class="ct-bloco"><h2>Características</h2><ul class="ct-lista">'+i.carac.concat(i.extras||[]).map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul></section>':'')+
+      (/^https:\/\/(youtu\.be|(www\.)?youtube\.com)\//.test(i.video||'')?'<section class="ct-bloco"><h2>Vídeo</h2><p><a class="btn btn--ghost" href="'+esc(i.video)+'" target="_blank" rel="noopener">Assistir ao vídeo do imóvel</a></p></section>':'')+
       '<section class="ct-bloco"><h2>Localização</h2><div class="ct-mapa">'+IC.mapa+'<p><b>'+esc(i.bairro||i.cidade)+'</b>'+esc(i.cidade)+', SP. O endereço completo é passado no agendamento da visita.</p></div></section>'+
     '</div><aside class="ct-valor" aria-label="Valor e contato">'+
       '<span class="ct-valor-rot">'+(i.fin==='locacao'?'Aluguel':'Valor de venda')+'</span>'+
@@ -6638,18 +6652,35 @@ function destaques(){
 /* ---------- começa ---------- */
 /* no site publicado: tenta a lista real em /api/imoveis (função do servidor que fala com a Kenlo).
    Se não existir ou falhar, ficam os exemplos. */
-function daApi(){
-  if(!/^https?:$/.test(location.protocol) || /claude|localhost|127\.0\.0\.1/.test(location.hostname)) return;
-  /* endereço da lista: <meta name="cm-api" content="https://....supabase.co/functions/v1/imoveis">; sem a meta, tenta /api/imoveis */
-  var m=document.querySelector('meta[name="cm-api"]'), api=m ? (m.getAttribute('content')||'').trim() : '/api/imoveis';
-  if(!api) return;
-  fetch(api,{headers:{Accept:'application/json'}}).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
-    if(!d) return; var l=Array.isArray(d)?d:(d.imoveis||d.data||d.items||d.results||d.lista||[]);
-    l=l.map(deKenlo).filter(function(i){ return i.cod && i.fotos.length; });
-    if(l.length){ carregar(l); if(location.hash==='#imovel') ficha(); if(window.console) console.info('Catálogo: '+l.length+' imóveis vindos da API.'); }
-  }).catch(function(){});
+var API='';
+function apiEndereco(){
+  if(!/^https?:$/.test(location.protocol) || /claude|localhost|127\.0\.0\.1/.test(location.hostname)) return '';
+  /* endereço da lista: <meta name="cm-api" content="imoveis.json"> (gerado pelo GitHub a cada 30 min) ou o endereço de uma função de servidor; sem a meta, tenta /api/imoveis */
+  var m=document.querySelector('meta[name="cm-api"]'); return m ? (m.getAttribute('content')||'').trim() : '/api/imoveis';
 }
-function inicia(){ carregar(exemplos()); if(location.hash==='#imovel') ficha(); daApi(); }
+function daApi(){
+  var conta=document.getElementById('ct-conta'); if(conta) conta.textContent='Carregando os imóveis…';
+  fetch(API,{headers:{Accept:'application/json'}}).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+    var l=d ? (Array.isArray(d)?d:(d.imoveis||d.data||d.items||d.results||d.lista||[])) : [];
+    l=l.map(deKenlo).filter(function(i){ return i.cod && i.fotos.length; });
+    if(l.length){ carregar(l); if(window.console) console.info('Catálogo: '+l.length+' imóveis vindos da API.'); }
+    else carregar(exemplos());
+    if(location.hash==='#imovel') ficha();
+  }).catch(function(){ carregar(exemplos()); if(location.hash==='#imovel') ficha(); });
+}
+/* a lista chega leve (só a foto de capa); a ficha busca o imóvel completo pelo código */
+var pedidos={};
+function completa(i){
+  if(!API || pedidos[i.cod]) return; pedidos[i.cod]=1;
+  /* imoveis.json (GitHub) -> imovel/CODIGO.json; função de servidor -> ?cod=CODIGO */
+  var url=/\.json(\?|$)/.test(API) ? API.replace(/[^\/]*\.json.*$/,'')+'imovel/'+String(i.cod).replace(/[^A-Za-z0-9_-]/g,'_')+'.json' : API+(API.indexOf('?')<0?'?':'&')+'cod='+encodeURIComponent(i.cod);
+  fetch(url,{headers:{Accept:'application/json'}}).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+    var x=d && (d.imovel||d); if(!x || !x.cod) return; x=deKenlo(x); x.parcial=false;
+    for(var k in x) i[k]=x[k];
+    if(atual===i && location.hash==='#imovel') ficha(i.cod);
+  }).catch(function(){ delete pedidos[i.cod]; });
+}
+function inicia(){ API=apiEndereco(); if(API) daApi(); else { carregar(exemplos()); if(location.hash==='#imovel') ficha(); } }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicia); else inicia();
 window.CM_CATALOGO={carregar:carregar,deKenlo:deKenlo,abrir:function(cod){ ficha(cod); if(window.__navegar) window.__navegar('imovel'); }};
 })();
