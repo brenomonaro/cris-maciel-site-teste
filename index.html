@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <script>/* endereços sem # (vindos dos redirecionamentos do site antigo): ?imovel=, ?emp=, ?fin=, ?p=pagina */
 (function(){try{var q=location.search,h=location.hash,m;if(h||!q)return;
-if(/[?&]imovel=/.test(q))h='#imovel';else if(/[?&]emp=/.test(q))h='#lancamento-ficha';else if((m=/[?&]p=([a-z-]+)/.exec(q))){h='#'+m[1];q=q.replace(/([?&])p=[a-z-]+&?/,'$1').replace(/[?&]$/,'');}else if(/[?&]fin=/.test(q))h='#imoveis';
+if(/[?&]imovel=/.test(q))h='#imovel';else if(/[?&]emp=/.test(q))h='#lancamento-ficha';else if(/[?&]c=/.test(q))h='#corretor';else if((m=/[?&]p=([a-z-]+)/.exec(q))){h='#'+m[1];q=q.replace(/([?&])p=[a-z-]+&?/,'$1').replace(/[?&]$/,'');}else if(/[?&]fin=/.test(q))h='#imoveis';
 if(h)history.replaceState(null,'',location.pathname+q+h);}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Consultoria imobiliária em Indaiatuba. Desde 2013 conduzindo compra, venda e locação com a calma que uma decisão de vida exige.">
@@ -2029,7 +2029,7 @@ input:not([type=checkbox]):not([type=radio]),.campo textarea,textarea,select{box
 @media (max-width:700px){.lx-vd-player{grid-template-columns:1fr;padding:10px}.lx-vd-seta{display:none}.lx-vd-grade{grid-auto-columns:minmax(170px,62vw)}}
 </style>
 <style id="fotos-reais">.quadro figure.com-foto{padding:0}.quadro figure.com-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}</style><style id="fotos-reais-2">.moldura.com-video{padding:0;position:relative;overflow:hidden}.moldura.com-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.seq-quadro.com-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.seq-quadro.com-foto .seq-tela{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .seq-quadro.com-foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(38,32,28,.25),rgba(38,32,28,.55))}
 .shot-frame.com-foto video{width:100%;height:100%;object-fit:cover;display:block}
 .ref-arq{display:inline-block;margin-top:.7em;font-size:.72rem;letter-spacing:.06em;text-transform:none;color:#8a5a2b;font-weight:600}</style><style id="continuo">
@@ -2174,7 +2174,7 @@ html,body{background-color:var(--creme)}
   /* "três coisas diferentes": mostra a foto que existe, não o espaço vazio */
   .fixa-visual .quadro{aspect-ratio:16/10}
   /* a chave na mão: mostra o quadro inteiro, porque as mãos entram pelas laterais */
-  #seq .seq-quadro.com-foto img{width:100%!important;height:auto!important;left:0!important;right:0!important;top:auto!important;bottom:20vh!important;object-fit:contain;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%)!important;mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%)!important}
+  #seq .seq-quadro.com-foto .seq-tela{width:100%!important;height:auto!important;left:0!important;right:0!important;top:auto!important;bottom:20vh!important;object-fit:contain;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%)!important;mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%)!important}
   #palco .rolar{display:none}
   #seq .seq-frases{transform:translateY(-24vh)!important}
   /* placeholders de foto que ainda falta: mais baixos no celular */
@@ -2329,8 +2329,8 @@ html,body{background-color:var(--creme)}
   <!-- sequência controlada pelo scroll -->
   <div class="seq" id="seq" style="height:320vh">
     <div class="seq-colado">
-      <div class="seq-quadro com-foto" id="seq-quadro"><img id="seq-img" src="lx-media/seq/chave-01.jpg" alt="A chave passando de uma mão para a outra" decoding="async"></div>
-      <p class="seq-contador" id="seq-contador">quadro 1 de 57</p>
+      <div class="seq-quadro com-foto" id="seq-quadro"><canvas class="seq-tela" id="seq-img" width="1600" height="1022" role="img" aria-label="Um aperto de mãos e a chave passando de uma mão para a outra"></canvas></div>
+      <p class="seq-contador" id="seq-contador">quadro 1 de 37</p>
       <div class="seq-frases" id="seq-frases">
         <p>Uma conversa que começou meses atrás.</p>
         <p>Uma decisão que ninguém apressou.</p>
@@ -2361,9 +2361,9 @@ html,body{background-color:var(--creme)}
   <div class="band eq-faixa" aria-labelledby="eq-faixa-t">
     <div class="wrap eq-faixa-cab">
       <div><p class="eyebrow">Quem trabalha com a gente</p><h2 id="eq-faixa-t">Antes da primeira conversa, você já sabe com quem vai falar.</h2></div>
-      <a class="lnk" href="#equipe">Conhecer a equipe</a>
+      <div class="eq-faixa-acoes"><button type="button" class="eq-seta" data-eq-passo="-1" aria-label="Voltar a faixa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="eq-seta" data-eq-passo="1" aria-label="Avançar a faixa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><a class="lnk" href="#equipe">Conhecer a equipe</a></div>
     </div>
-    <div class="eq-trilho" aria-label="Rostos da equipe da Cris Maciel. Toque para conhecer cada um."><div class="eq-pista"><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cris.webp" alt="" loading="lazy" decoding="async"></span><b>Cris</b><small>Sócia proprietária</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/enzo.webp" alt="" loading="lazy" decoding="async"></span><b>Enzo</b><small>Sócio proprietário</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/sandra.webp" alt="" loading="lazy" decoding="async"></span><b>Sandra</b><small>Gerente dos corretores</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/aline.webp" alt="" loading="lazy" decoding="async"></span><b>Aline</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-jamile.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Jamile</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/anderson.webp" alt="" loading="lazy" decoding="async"></span><b>Anderson</b><small>Corretor</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cynthia.webp" alt="" loading="lazy" decoding="async"></span><b>Cynthia</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Flávia</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/josiane.webp" alt="" loading="lazy" decoding="async"></span><b>Josiane</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/karen.webp" alt="" loading="lazy" decoding="async"></span><b>Karen</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/lazaro.webp" alt="" loading="lazy" decoding="async"></span><b>Lázaro</b><small>Corretor</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/monica.webp" alt="" loading="lazy" decoding="async"></span><b>Mônica</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/vanessa.webp" alt="" loading="lazy" decoding="async"></span><b>Vanessa</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/katia.webp" alt="" loading="lazy" decoding="async"></span><b>Kátia</b><small>Locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Flávia</b><small>Locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/amanda.webp" alt="" loading="lazy" decoding="async"></span><b>Amanda</b><small>Corretora de locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/eva.webp" alt="" loading="lazy" decoding="async"></span><b>Eva</b><small>Financeiro</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/breno.webp" alt="" loading="lazy" decoding="async"></span><b>Breno</b><small>Marketing</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/nicole.webp" alt="" loading="lazy" decoding="async"></span><b>Nicole</b><small>Social media</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/maria.webp" alt="" loading="lazy" decoding="async"></span><b>Maria</b><small>Serviços gerais</small></a><span class="eq-copia" aria-hidden="true"><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cris.webp" alt="" loading="lazy" decoding="async"></span><b>Cris</b><small>Sócia proprietária</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/enzo.webp" alt="" loading="lazy" decoding="async"></span><b>Enzo</b><small>Sócio proprietário</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/sandra.webp" alt="" loading="lazy" decoding="async"></span><b>Sandra</b><small>Gerente dos corretores</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/aline.webp" alt="" loading="lazy" decoding="async"></span><b>Aline</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-jamile.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Jamile</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/anderson.webp" alt="" loading="lazy" decoding="async"></span><b>Anderson</b><small>Corretor</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cynthia.webp" alt="" loading="lazy" decoding="async"></span><b>Cynthia</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Flávia</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/josiane.webp" alt="" loading="lazy" decoding="async"></span><b>Josiane</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/karen.webp" alt="" loading="lazy" decoding="async"></span><b>Karen</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/lazaro.webp" alt="" loading="lazy" decoding="async"></span><b>Lázaro</b><small>Corretor</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/monica.webp" alt="" loading="lazy" decoding="async"></span><b>Mônica</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/vanessa.webp" alt="" loading="lazy" decoding="async"></span><b>Vanessa</b><small>Corretora</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/katia.webp" alt="" loading="lazy" decoding="async"></span><b>Kátia</b><small>Locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Flávia</b><small>Locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/amanda.webp" alt="" loading="lazy" decoding="async"></span><b>Amanda</b><small>Corretora de locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/eva.webp" alt="" loading="lazy" decoding="async"></span><b>Eva</b><small>Financeiro</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/breno.webp" alt="" loading="lazy" decoding="async"></span><b>Breno</b><small>Marketing</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/nicole.webp" alt="" loading="lazy" decoding="async"></span><b>Nicole</b><small>Social media</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/maria.webp" alt="" loading="lazy" decoding="async"></span><b>Maria</b><small>Serviços gerais</small></a></span></div></div>
+    <div class="eq-trilho" aria-label="Rostos da equipe da Cris Maciel. Arraste para os lados e toque num corretor para ver o perfil."><div class="eq-pista"><a class="eq-cara" href="?c=cris#corretor" data-corretor="cris" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cris.webp" alt="" loading="lazy" decoding="async"></span><b>Cris</b><small>Sócia proprietária</small></a><a class="eq-cara" href="?c=enzo#corretor" data-corretor="enzo" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/enzo.webp" alt="" loading="lazy" decoding="async"></span><b>Enzo</b><small>Sócio proprietário</small></a><a class="eq-cara" href="?c=sandra#corretor" data-corretor="sandra" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/sandra.webp" alt="" loading="lazy" decoding="async"></span><b>Sandra</b><small>Gerente dos corretores</small></a><a class="eq-cara" href="?c=aline#corretor" data-corretor="aline" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/aline.webp" alt="" loading="lazy" decoding="async"></span><b>Aline</b><small>Corretora</small></a><a class="eq-cara" href="?c=ana-jamile#corretor" data-corretor="ana-jamile" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-jamile.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Jamile</b><small>Corretora</small></a><a class="eq-cara" href="?c=anderson#corretor" data-corretor="anderson" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/anderson.webp" alt="" loading="lazy" decoding="async"></span><b>Anderson</b><small>Corretor</small></a><a class="eq-cara" href="?c=cynthia#corretor" data-corretor="cynthia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cynthia.webp" alt="" loading="lazy" decoding="async"></span><b>Cynthia</b><small>Corretora</small></a><a class="eq-cara" href="?c=flavia#corretor" data-corretor="flavia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Flávia</b><small>Corretora</small></a><a class="eq-cara" href="?c=josiane#corretor" data-corretor="josiane" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/josiane.webp" alt="" loading="lazy" decoding="async"></span><b>Josiane</b><small>Corretora</small></a><a class="eq-cara" href="?c=karen#corretor" data-corretor="karen" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/karen.webp" alt="" loading="lazy" decoding="async"></span><b>Karen</b><small>Corretora</small></a><a class="eq-cara" href="?c=lazaro#corretor" data-corretor="lazaro" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/lazaro.webp" alt="" loading="lazy" decoding="async"></span><b>Lázaro</b><small>Corretor</small></a><a class="eq-cara" href="?c=monica#corretor" data-corretor="monica" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/monica.webp" alt="" loading="lazy" decoding="async"></span><b>Mônica</b><small>Corretora</small></a><a class="eq-cara" href="?c=vanessa#corretor" data-corretor="vanessa" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/vanessa.webp" alt="" loading="lazy" decoding="async"></span><b>Vanessa</b><small>Corretora</small></a><a class="eq-cara" href="?c=katia#corretor" data-corretor="katia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/katia.webp" alt="" loading="lazy" decoding="async"></span><b>Kátia</b><small>Locação</small></a><a class="eq-cara" href="?c=ana-flavia#corretor" data-corretor="ana-flavia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Flávia</b><small>Locação</small></a><a class="eq-cara" href="?c=amanda#corretor" data-corretor="amanda" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/amanda.webp" alt="" loading="lazy" decoding="async"></span><b>Amanda</b><small>Corretora de locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/eva.webp" alt="" loading="lazy" decoding="async"></span><b>Eva</b><small>Financeiro</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/breno.webp" alt="" loading="lazy" decoding="async"></span><b>Breno</b><small>Marketing</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/nicole.webp" alt="" loading="lazy" decoding="async"></span><b>Nicole</b><small>Social media</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/maria.webp" alt="" loading="lazy" decoding="async"></span><b>Maria</b><small>Serviços gerais</small></a><span class="eq-copia" aria-hidden="true"><a class="eq-cara" href="?c=cris#corretor" data-corretor="cris" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cris.webp" alt="" loading="lazy" decoding="async"></span><b>Cris</b><small>Sócia proprietária</small></a><a class="eq-cara" href="?c=enzo#corretor" data-corretor="enzo" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/enzo.webp" alt="" loading="lazy" decoding="async"></span><b>Enzo</b><small>Sócio proprietário</small></a><a class="eq-cara" href="?c=sandra#corretor" data-corretor="sandra" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/sandra.webp" alt="" loading="lazy" decoding="async"></span><b>Sandra</b><small>Gerente dos corretores</small></a><a class="eq-cara" href="?c=aline#corretor" data-corretor="aline" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/aline.webp" alt="" loading="lazy" decoding="async"></span><b>Aline</b><small>Corretora</small></a><a class="eq-cara" href="?c=ana-jamile#corretor" data-corretor="ana-jamile" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-jamile.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Jamile</b><small>Corretora</small></a><a class="eq-cara" href="?c=anderson#corretor" data-corretor="anderson" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/anderson.webp" alt="" loading="lazy" decoding="async"></span><b>Anderson</b><small>Corretor</small></a><a class="eq-cara" href="?c=cynthia#corretor" data-corretor="cynthia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/cynthia.webp" alt="" loading="lazy" decoding="async"></span><b>Cynthia</b><small>Corretora</small></a><a class="eq-cara" href="?c=flavia#corretor" data-corretor="flavia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Flávia</b><small>Corretora</small></a><a class="eq-cara" href="?c=josiane#corretor" data-corretor="josiane" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/josiane.webp" alt="" loading="lazy" decoding="async"></span><b>Josiane</b><small>Corretora</small></a><a class="eq-cara" href="?c=karen#corretor" data-corretor="karen" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/karen.webp" alt="" loading="lazy" decoding="async"></span><b>Karen</b><small>Corretora</small></a><a class="eq-cara" href="?c=lazaro#corretor" data-corretor="lazaro" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/lazaro.webp" alt="" loading="lazy" decoding="async"></span><b>Lázaro</b><small>Corretor</small></a><a class="eq-cara" href="?c=monica#corretor" data-corretor="monica" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/monica.webp" alt="" loading="lazy" decoding="async"></span><b>Mônica</b><small>Corretora</small></a><a class="eq-cara" href="?c=vanessa#corretor" data-corretor="vanessa" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/vanessa.webp" alt="" loading="lazy" decoding="async"></span><b>Vanessa</b><small>Corretora</small></a><a class="eq-cara" href="?c=katia#corretor" data-corretor="katia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/katia.webp" alt="" loading="lazy" decoding="async"></span><b>Kátia</b><small>Locação</small></a><a class="eq-cara" href="?c=ana-flavia#corretor" data-corretor="ana-flavia" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/ana-flavia.webp" alt="" loading="lazy" decoding="async"></span><b>Ana Flávia</b><small>Locação</small></a><a class="eq-cara" href="?c=amanda#corretor" data-corretor="amanda" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/amanda.webp" alt="" loading="lazy" decoding="async"></span><b>Amanda</b><small>Corretora de locação</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/eva.webp" alt="" loading="lazy" decoding="async"></span><b>Eva</b><small>Financeiro</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/breno.webp" alt="" loading="lazy" decoding="async"></span><b>Breno</b><small>Marketing</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/nicole.webp" alt="" loading="lazy" decoding="async"></span><b>Nicole</b><small>Social media</small></a><a class="eq-cara" href="#equipe" tabindex="-1"><span class="eq-cara-f"><img src="lx-media/equipe/maria.webp" alt="" loading="lazy" decoding="async"></span><b>Maria</b><small>Serviços gerais</small></a></span></div></div>
   </div>
 
   <!-- galeria horizontal -->
@@ -2776,10 +2776,10 @@ html,body{background-color:var(--creme)}
       <div class="lx-filtros" id="lx-filtros" aria-label="Filtros de lançamentos">
         <div class="lx-f-linha"><span class="lx-f-rot">Bairro</span><div class="lx-f-op" data-g="regiao"></div></div>
         <div class="lx-f-linha"><span class="lx-f-rot">Tipo</span><div class="lx-f-op" data-g="tipo"></div></div>
-        <div class="lx-f-linha"><span class="lx-f-rot">Incorporadora</span><div class="lx-f-op" data-g="inc"></div></div>
+        <div class="lx-f-linha"><span class="lx-f-rot">A partir de</span><div class="lx-f-op" data-g="preco"></div></div>
         <div class="lx-f-linha lx-f-ult">
           <label class="lx-f-busca"><span class="lx-f-rot">Nome</span><input type="search" id="lx-f-nome" placeholder="Digite o nome do empreendimento" autocomplete="off"></label>
-          <button type="button" class="lx-f-chip" data-g="video" data-v="1" aria-pressed="false">Com vídeo no nosso canal</button>
+          <button type="button" class="lx-f-chip" data-g="video" data-v="1" aria-pressed="false">Com vídeo da equipe</button>
           <button type="button" class="lx-f-limpar" id="lx-f-limpar">Limpar</button>
         </div>
       </div>
@@ -3071,7 +3071,7 @@ html,body{background-color:var(--creme)}
       </div>
       <div class="lx-quem">
         <p class="lx-eyebrow">Quem cuida deste lançamento</p>
-        <article><div class="retrato-mini retrato-mini--g" aria-hidden="true" style="position:relative;overflow:hidden"><img src="lx-media/equipe/sandra.webp" alt="" loading="lazy"></div><div><b>Sandra</b><small>Gerente dos corretores. Acompanha os lançamentos da casa e responde por eles.</small><a href="#equipe">Conhecer a equipe</a></div></article>
+        <article><div class="retrato-mini retrato-mini--g" aria-hidden="true" style="position:relative;overflow:hidden"><img src="lx-media/equipe/sandra.webp" alt="" loading="lazy"></div><div><b>Sandra</b><small>Gerente dos corretores. Acompanha os lançamentos da casa e responde por eles.</small><a href="?c=sandra#corretor" data-corretor="sandra">Ver o perfil da Sandra</a></div></article>
         <article><div class="retrato-mini retrato-mini--g" aria-hidden="true">?</div><div><b>[Corretor responsável]</b><small>Cadastrou o Lina Residence e acompanha o empreendimento desde o lançamento.</small><a href="#equipe">Conhecer a equipe</a></div></article>
       </div>
     </div>
@@ -3768,114 +3768,133 @@ html,body{background-color:var(--creme)}
       <figure class="shot r equipe-foto"><div class="shot-frame com-foto" style="--ar:16/9"><img src="lx-media/cm-equipe.webp" alt="A equipe da Cris Maciel na recepção do escritório" loading="lazy" decoding="async" style="object-position:50% 62%"></div></figure>
       <p class="eyebrow equipe-grupo">Direção e gerência</p>
       <div class="pessoas">
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="cris" data-grupo="Direção e gerência">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/cris.webp" alt="Cris, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:0.0% 0"></span></div></figure>
           <h3>Cris</h3>
           <p>Sócia proprietária e corretora. Está à frente da casa e conduz pessoalmente os imóveis fora do Brasil.</p>
+          <a class="pessoa-ver" href="?c=cris#corretor" data-corretor="cris">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="enzo" data-grupo="Direção e gerência">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/enzo.webp" alt="Enzo, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:5.5556% 0"></span></div></figure>
           <h3>Enzo</h3>
           <p>Sócio proprietário. Conduz compra e venda e acompanha cada negócio até a assinatura.</p>
           <p class="avaliacao">“Assumiu toda a papelada e os trâmites de cartório e resolveu tudo sem complicação e com muita transparência.”<b>Leonardo, no Google</b></p>
+          <a class="pessoa-ver" href="?c=enzo#corretor" data-corretor="enzo">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="sandra" data-grupo="Direção e gerência">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/sandra.webp" alt="Sandra, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:11.1111% 0"></span></div></figure>
           <h3>Sandra</h3>
           <p>Gerente dos corretores. Cuida dos lançamentos e é quem libera o acesso à área restrita.</p>
           <p class="avaliacao pendente">Avaliação do Google a escolher</p>
+          <a class="pessoa-ver" href="?c=sandra#corretor" data-corretor="sandra">Ver o perfil</a>
         </article>
       </div>
       <p class="eyebrow equipe-grupo">Compra e venda</p>
       <div class="pessoas pessoas--compacta">
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="adriana" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-sem" style="--ar:3/4"><span class="eq-ini" aria-hidden="true">A</span></div></figure>
           <h3>Adriana</h3>
           <p>Corretora de imóveis.</p>
+          <a class="pessoa-ver" href="?c=adriana#corretor" data-corretor="adriana">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="aline" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/aline.webp" alt="Aline, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:16.6667% 0"></span></div></figure>
           <h3>Aline</h3>
           <p>Acompanha quem está procurando imóvel para comprar, da primeira conversa até a proposta.</p>
           <p class="avaliacao">“Sempre disposta a esclarecer minhas dúvidas, sem pressionar minha decisão.”<b>Felipe André Ritter, no Google</b></p>
+          <a class="pessoa-ver" href="?c=aline#corretor" data-corretor="aline">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="ana-jamile" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/ana-jamile.webp" alt="Ana Jamile, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:22.2222% 0"></span></div></figure>
           <h3>Ana Jamile</h3>
           <p>Corretora de imóveis.</p>
           <p class="avaliacao pendente">Avaliação do Google a escolher</p>
+          <a class="pessoa-ver" href="?c=ana-jamile#corretor" data-corretor="ana-jamile">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="anderson" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/anderson.webp" alt="Anderson, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:27.7778% 0"></span></div></figure>
           <h3>Anderson</h3>
           <p>Corretor de imóveis.</p>
+          <a class="pessoa-ver" href="?c=anderson#corretor" data-corretor="anderson">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="cynthia" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/cynthia.webp" alt="Cynthia, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:33.3333% 0"></span></div></figure>
           <h3>Cynthia</h3>
           <p>Corretora de imóveis.</p>
           <p class="avaliacao pendente">Avaliação do Google a escolher</p>
+          <a class="pessoa-ver" href="?c=cynthia#corretor" data-corretor="cynthia">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="denis" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-sem" style="--ar:3/4"><span class="eq-ini" aria-hidden="true">D</span></div></figure>
           <h3>Denis</h3>
           <p>Corretor de imóveis.</p>
+          <a class="pessoa-ver" href="?c=denis#corretor" data-corretor="denis">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="felipe" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-sem" style="--ar:3/4"><span class="eq-ini" aria-hidden="true">F</span></div></figure>
           <h3>Felipe</h3>
           <p>Corretor de imóveis.</p>
+          <a class="pessoa-ver" href="?c=felipe#corretor" data-corretor="felipe">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="flavia" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/flavia.webp" alt="Flávia, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:38.8889% 0"></span></div></figure>
           <h3>Flávia</h3>
           <p>Corretora de imóveis.</p>
+          <a class="pessoa-ver" href="?c=flavia#corretor" data-corretor="flavia">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="josiane" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/josiane.webp" alt="Josiane, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:44.4444% 0"></span></div></figure>
           <h3>Josiane</h3>
           <p>Corretora de imóveis.</p>
+          <a class="pessoa-ver" href="?c=josiane#corretor" data-corretor="josiane">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="karen" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/karen.webp" alt="Karen, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:50.0% 0"></span></div></figure>
           <h3>Karen</h3>
           <p>Corretora de imóveis.</p>
+          <a class="pessoa-ver" href="?c=karen#corretor" data-corretor="karen">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="lazaro" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/lazaro.webp" alt="Lázaro, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:55.5556% 0"></span></div></figure>
           <h3>Lázaro</h3>
           <p>Corretor de imóveis.</p>
+          <a class="pessoa-ver" href="?c=lazaro#corretor" data-corretor="lazaro">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="monica" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/monica.webp" alt="Mônica, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:61.1111% 0"></span></div></figure>
           <h3>Mônica</h3>
           <p>Corretora de imóveis.</p>
           <p class="avaliacao pendente">Avaliação do Google a escolher</p>
+          <a class="pessoa-ver" href="?c=monica#corretor" data-corretor="monica">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="vanessa" data-grupo="Compra e venda">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/vanessa.webp" alt="Vanessa, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:66.6667% 0"></span></div></figure>
           <h3>Vanessa</h3>
           <p>Corretora de imóveis.</p>
           <p class="avaliacao pendente">Avaliação do Google a escolher</p>
+          <a class="pessoa-ver" href="?c=vanessa#corretor" data-corretor="vanessa">Ver o perfil</a>
         </article>
       </div>
       <p class="eyebrow equipe-grupo">Locação</p>
       <div class="pessoas">
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="katia" data-grupo="Locação">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/katia.webp" alt="Kátia, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:72.2222% 0"></span></div></figure>
           <h3>Kátia</h3>
           <p>Cuida dos contratos de locação do começo ao fim. Se você alugou um imóvel com a gente, é com ela que você fala.</p>
+          <a class="pessoa-ver" href="?c=katia#corretor" data-corretor="katia">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="ana-flavia" data-grupo="Locação">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/ana-flavia.webp" alt="Ana Flávia, da Cris Maciel" loading="lazy" decoding="async"></div></figure>
           <h3>Ana Flávia</h3>
           <p>Cuida da locação, ao lado da Kátia.</p>
+          <a class="pessoa-ver" href="?c=ana-flavia#corretor" data-corretor="ana-flavia">Ver o perfil</a>
         </article>
-        <article class="pessoa r">
+        <article class="pessoa r" data-corretor="amanda" data-grupo="Locação">
           <figure class="shot"><div class="shot-frame eq-foto" style="--ar:3/4"><img src="lx-media/equipe/amanda.webp" alt="Amanda, da Cris Maciel" loading="lazy" decoding="async"><span class="eq-casa" aria-hidden="true" style="background-position:77.7778% 0"></span></div></figure>
           <h3>Amanda</h3>
           <p>Corretora de locação. Acompanha quem procura um imóvel para alugar.</p>
           <p class="avaliacao pendente">Avaliação do Google a escolher</p>
+          <a class="pessoa-ver" href="?c=amanda#corretor" data-corretor="amanda">Ver o perfil</a>
         </article>
       </div>
       <p class="eyebrow equipe-grupo">Bastidores</p>
@@ -3910,6 +3929,43 @@ html,body{background-color:var(--creme)}
     </div>
   </div>
 </section>
+<section class="page" id="corretor" hidden>
+  <div class="page-head cr-cab">
+    <div class="wrap cr-grade">
+      <figure class="cr-foto"><img data-cr="foto" alt="" decoding="async"><span class="cr-ini" data-cr="ini" aria-hidden="true"></span></figure>
+      <div class="cr-txt">
+        <p class="eyebrow" data-cr="papel"></p>
+        <h1 data-cr="nome"></h1>
+        <p class="lede" data-cr="texto"></p>
+        <ul class="cr-areas" data-cr="areas" aria-label="Com o que trabalha"></ul>
+        <div class="cr-acoes">
+          <a class="btn btn--gold" data-cr="wa" href="https://wa.me/5519992754241" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg><span data-cr="wa-t">Conversar no WhatsApp</span></a>
+          <a class="lnk" href="#equipe">Ver toda a equipe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="band cr-bloco" data-cr-bloco="aval">
+    <div class="wrap">
+      <p class="eyebrow" data-cr="aval-h">O que dizem no Google</p>
+      <div class="cr-aval" data-cr="aval"></div>
+    </div>
+  </div>
+  <div class="band cr-bloco" data-cr-bloco="videos" hidden>
+    <div class="wrap">
+      <p class="eyebrow">Em vídeo</p>
+      <h2 class="cr-h2" data-cr="videos-h"></h2>
+      <div class="cr-videos" data-cr="videos"></div>
+    </div>
+  </div>
+  <div class="band cr-bloco cr-outros">
+    <div class="wrap">
+      <p class="eyebrow">Outras pessoas da equipe</p>
+      <div class="cr-trilho" data-cr="outros"></div>
+    </div>
+  </div>
+</section>
+
 
 <!-- ====================== TRABALHE COM A GENTE ====================== -->
 <section class="page" id="trabalhe" hidden>
@@ -4175,8 +4231,8 @@ html,body{background-color:var(--creme)}
   /* botão Voltar no topo: volta para a página de onde a pessoa veio;
      se ela chegou direto por um link, volta para a página "mãe" */
   var btnVoltar = document.getElementById('voltar-topo');
-  var PAI = {'lancamento-ficha':'lancamentos','imovel':'imoveis','restrita-acesso':'restrita','restrita-recebido':'restrita','restrita-ficha':'restrita','trabalhe':'equipe'};
-  var NOME = {'inicio':'o início','historia':'Nossa história','processo':'Como conduzimos','imoveis':'Imóveis','busca':'a busca de imóveis','imovel':'o imóvel','lancamentos':'Lançamentos','lancamento-ficha':'o lançamento','restrita':'a Área restrita','restrita-acesso':'o pedido de acesso','restrita-ficha':'a ficha','proprietario':'Anunciar meu imóvel','administracao':'Administração','permuta':'Permuta','internacional':'Fora do Brasil','equipe':'Equipe','trabalhe':'Trabalhe conosco','contato':'Contato','privacidade':'Privacidade'};
+  var PAI = {'corretor':'equipe','lancamento-ficha':'lancamentos','imovel':'imoveis','restrita-acesso':'restrita','restrita-recebido':'restrita','restrita-ficha':'restrita','trabalhe':'equipe'};
+  var NOME = {'corretor':'o perfil','inicio':'o início','historia':'Nossa história','processo':'Como conduzimos','imoveis':'Imóveis','busca':'a busca de imóveis','imovel':'o imóvel','lancamentos':'Lançamentos','lancamento-ficha':'o lançamento','restrita':'a Área restrita','restrita-acesso':'o pedido de acesso','restrita-ficha':'a ficha','proprietario':'Anunciar meu imóvel','administracao':'Administração','permuta':'Permuta','internacional':'Fora do Brasil','equipe':'Equipe','trabalhe':'Trabalhe conosco','contato':'Contato','privacidade':'Privacidade'};
   var pilha = [];
   function destinoDe(id){ return pilha.length > 1 ? pilha[pilha.length-2] : (PAI[id] || 'inicio'); }
   window.__voltarAtualiza = function(id){
@@ -4282,7 +4338,7 @@ html,body{background-color:var(--creme)}
         var cursoS = sr.height - alt;
         var ps = limitar(-sr.top / Math.max(cursoS,1), 0, 1);
         el.seqQ.style.transform = 'scale(' + (1.16 - ps*0.16) + ')';
-        if(el.seqC) el.seqC.textContent = 'quadro ' + (1 + Math.round(ps*56)) + ' de 57';
+        if(el.seqC){ var nq = window.SEQ_N || 37; el.seqC.textContent = 'quadro ' + (1 + Math.round(ps*(nq-1))) + ' de ' + nq; }
         if(el.seqM) el.seqM.style.transform = 'scaleX(' + ps + ')';
         var marcas = [0.10, 0.40, 0.70];
         for(var f=0; f<el.frases.length; f++){
@@ -4501,7 +4557,7 @@ html,body{background-color:var(--creme)}
 
   /* ?imovel=CODIGO e ?emp=ID ficam no endereço só enquanto a ficha está aberta (link para compartilhar) */
   function semParam(q,k){ return (q||'').replace(new RegExp('([?&])'+k+'=[^&]*&?'),'$1').replace(/[?&]$/,''); }
-  function limpaBusca(q,id){ if(id!=='imovel') q=semParam(q,'imovel'); if(id!=='lancamento-ficha') q=semParam(q,'emp'); return q; }
+  function limpaBusca(q,id){ if(id!=='imovel') q=semParam(q,'imovel'); if(id!=='lancamento-ficha') q=semParam(q,'emp'); if(id!=='corretor') q=semParam(q,'c'); return q; }
   function navegar(id, empurrar, busca){
     if(id === 'busca') id = 'imoveis';
     if(!paginaExiste(id)) id = 'nao-encontrado';
@@ -5811,6 +5867,7 @@ html,body{background-color:var(--creme)}
     if(VID[e.id])e.videos=VID[e.id].map(function(v){var d=/^sandra-/.test(v[0])?'lx-media/':'lx-media/lanc/';return {src:d+v[0]+'.mp4',poster:d+v[0]+'.jpg',rot:v[1],leg:v[2]};});
     if(CAPA_VID[e.id])e.capaVideo=CAPA_VID[e.id];
   });
+  window.__lxDados={emp:EMP,vid:VID};
   var izzi=EMP.filter(function(e){return e.id==='izzi';})[0];
   if(izzi){izzi.perfil='investidor';izzi.inv={
     h:'Os números primeiro.',
@@ -5838,13 +5895,19 @@ html,body{background-color:var(--creme)}
   }
 
   /* ---------- filtros ---------- */
-  var F={regiao:null,tipo:null,inc:null,video:null,nome:''};
-  var GRUPOS={regiao:['Park Meraki','Centro','Cidade Nova','Helvetia'],tipo:['Apartamento','Loteamento','Uso misto'],inc:['GPCI','Perplan','Lofts Incorporadora','Hcon','Masotti','Urban Square','Pinheiro','Longitude']};
+  var F={regiao:null,tipo:null,preco:null,video:null,nome:''};
+  /* faixas de valor, pelo "a partir de" de cada ficha; quem ainda não tem valor fica em "Valor na visita" */
+  var FAIXAS=[['Até R$ 400 mil',0,400e3],['R$ 400 a 700 mil',400e3,700e3],['R$ 700 mil a 1 milhão',700e3,1e6],['Acima de R$ 1 milhão',1e6,1e12]];
+  function valor(e){var m=/R\$\s*([\d.,]+)\s*(milh|mil)/i.exec(e.apartir||'');if(!m)return 0;var n=parseFloat(m[1].replace(/\./g,'').replace(',','.'));return n*(/milh/i.test(m[2])?1e6:1e3);}
+  function faixa(e){var v=valor(e);if(!v)return 'Valor na visita';for(var i=0;i<FAIXAS.length;i++)if(v>=FAIXAS[i][1]&&v<FAIXAS[i][2])return FAIXAS[i][0];return 'Valor na visita';}
+  /* bairros: os que têm pelo menos dois empreendimentos, do que tem mais para o que tem menos */
+  function bairros(){var c={};EMP.forEach(function(e){if(e.regiao)c[e.regiao]=(c[e.regiao]||0)+1;});return Object.keys(c).filter(function(k){return c[k]>1;}).sort(function(a,b){return c[b]-c[a]||a.localeCompare(b);});}
+  var GRUPOS={regiao:bairros(),tipo:['Apartamento','Loteamento','Uso misto'],preco:FAIXAS.map(function(f){return f[0];}).concat(['Valor na visita'])};
   function sem(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
   function passa(e,f){
     if(f.regiao&&e.regiao!==f.regiao)return false;
     if(f.tipo&&e.tipo!==f.tipo)return false;
-    if(f.inc&&e.inc!==f.inc)return false;
+    if(f.preco&&faixa(e)!==f.preco)return false;
     if(f.video&&!(e.video||e.videos||e.capaVideo))return false;
     if(f.nome&&sem(e.nome).indexOf(sem(f.nome))<0)return false;
     return true;
@@ -5853,7 +5916,7 @@ html,body{background-color:var(--creme)}
   function montaFiltros(){
     Object.keys(GRUPOS).forEach(function(g){
       var box=pagL.querySelector('.lx-f-op[data-g="'+g+'"]');if(!box)return;
-      box.innerHTML=['<button type="button" class="lx-f-chip" data-g="'+g+'" data-v="" aria-pressed="'+(!F[g])+'">'+(g==='tipo'?'Todos':'Todas')+'</button>'].concat(GRUPOS[g].map(function(v){
+      box.innerHTML=['<button type="button" class="lx-f-chip" data-g="'+g+'" data-v="" aria-pressed="'+(!F[g])+'">'+'Todos'+'</button>'].concat(GRUPOS[g].map(function(v){
         return '<button type="button" class="lx-f-chip" data-g="'+g+'" data-v="'+v+'" aria-pressed="'+(F[g]===v)+'">'+v.replace(' Incorporadora','')+'<i>'+conta(g,v)+'</i></button>';})).join('');
     });
     var vb=pagL.querySelector('.lx-f-chip[data-g="video"]');if(vb)vb.setAttribute('aria-pressed',F.video?'true':'false');
@@ -5877,7 +5940,7 @@ html,body{background-color:var(--creme)}
       lista();
     });
     var nome=document.getElementById('lx-f-nome');if(nome)nome.addEventListener('input',function(){F.nome=nome.value.trim();lista();});
-    var limpa=document.getElementById('lx-f-limpar');if(limpa)limpa.addEventListener('click',function(){F={regiao:null,tipo:null,inc:null,video:null,nome:''};if(nome)nome.value='';lista();});
+    var limpa=document.getElementById('lx-f-limpar');if(limpa)limpa.addEventListener('click',function(){F={regiao:null,tipo:null,preco:null,video:null,nome:''};if(nome)nome.value='';lista();});
     lista();
   }
   /* o motivo escolhido nas portas muda a leitura dos cartões */
@@ -5898,7 +5961,7 @@ html,body{background-color:var(--creme)}
     if(SANDRA[e.id]){
       box.classList.add('tem');
       box.innerHTML='<video controls playsinline preload="none" poster="lx-media/sandra-'+e.id+'.jpg" src="lx-media/sandra-'+e.id+'.mp4" aria-label="A Sandra apresenta o '+e.nome+'"></video>';
-      if(leg){leg.hidden=false;leg.textContent='A Sandra, gerente dos corretores, apresenta o '+e.nome+'.';}
+      if(leg){leg.hidden=false;leg.innerHTML='<a href="?c=sandra#corretor" data-corretor="sandra">A Sandra</a>, gerente dos corretores, apresenta o '+e.nome+'.';}
     }else{
       box.classList.remove('tem');
       box.innerHTML='<span>Vídeo vertical da Sandra com os pontos fortes do '+e.nome+', até 60 segundos</span>';
@@ -6466,13 +6529,13 @@ html,body{background-color:var(--creme)}
 #palco{perspective:none;min-height:540px;height:min(56.25vw,calc(100vh - 96px))}
 @media (max-width:760px){#palco{height:auto;min-height:clamp(480px,72vh,640px)}#palco .veu{background:linear-gradient(180deg,rgba(247,244,238,.55),rgba(247,244,238,.92))}#palco-texto>.stack{margin-left:0}}
 /* sequência da chave: clara, na cor da parede, sem o letreiro */
-#seq{background:#EDDCA4}
-#seq .seq-quadro.com-foto{background:#EDDCA4}
-#seq .seq-quadro.com-foto img{inset:auto 0 0 0;top:auto;width:100%;height:74vh;object-fit:cover;object-position:50% 28%;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%);mask-image:linear-gradient(180deg,transparent 0,#000 14%)}
+#seq{background:#EBE2C6}
+#seq .seq-quadro.com-foto{background:#EBE2C6}
+#seq .seq-quadro.com-foto .seq-tela{inset:auto 0 0 0;top:auto;width:100%;height:74vh;object-fit:cover;object-position:50% 28%;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%);mask-image:linear-gradient(180deg,transparent 0,#000 14%)}
 #seq .seq-quadro.com-foto::after{content:none}
-@media (max-width:760px){#seq .seq-quadro.com-foto img{height:62vh;object-position:58% 30%}#seq .seq-frases{transform:translateY(-30vh)}}
+@media (max-width:760px){#seq .seq-quadro.com-foto .seq-tela{height:62vh;object-position:58% 30%}#seq .seq-frases{transform:translateY(-30vh)}}
 #seq .seq-frases{transform:translateY(-35vh)}
-#seq .seq-quadro{filter:saturate(.5) brightness(1.03)}
+#seq .seq-quadro{filter:none}
 #seq .seq-frases p{color:var(--tinta)}
 #seq .seq-contador{color:#8C7A55}
 #seq .seq-medidor{background:rgba(70,56,30,.2)}
@@ -6574,13 +6637,93 @@ html,body{background-color:var(--creme)}
 @media (min-width:821px){.nav{flex-wrap:nowrap;gap:clamp(12px,1.5vw,26px)}.nav a{white-space:nowrap}}
 @media (min-width:821px) and (max-width:1280px){.nav a{font-size:.74rem}}
 @media (min-width:821px) and (max-width:1050px){.nav{gap:10px}.nav a{font-size:.68rem;letter-spacing:0}}
-</style><script id="seq-quadros">(function(){var seq=document.getElementById('seq'),im=document.getElementById('seq-img');if(!seq||!im)return;var N=57,fr=[],pronto=false,ult=-1,mostrado=0;
-function nome(i){return 'lx-media/seq/chave-'+(i<9?'0':'')+(i+1)+'.jpg';}
-function carregar(){if(pronto)return;pronto=true;window.SEQ_PRONTO=function(){var a=window.SEQ_CHAVE||[];for(var i=0;i<N;i++){var x=new Image();x.decoding='async';x.src=a[i]?'data:image/jpeg;base64,'+a[i]:nome(0);fr.push(x);}x.onload=function(){ult=-1;passo();};};var sc=document.createElement('script');sc.src='lx-media/seq/chave.js';sc.async=true;document.head.appendChild(sc);}
-function pronto_(i){var x=fr[i];return x&&x.complete&&x.naturalWidth>0;}
-function mostra(k){if(!pronto_(k)){var d=1;while(d<N){if(k-d>=0&&pronto_(k-d)){k=k-d;break;}if(k+d<N&&pronto_(k+d)){k=k+d;break;}d++;}if(!pronto_(k))return;}if(k===mostrado&&im.getAttribute('src')===fr[k].src)return;mostrado=k;im.src=fr[k].src;}
-function passo(){var r=seq.getBoundingClientRect(),a=window.innerHeight;if(r.top<a*3&&r.bottom>-a)carregar();var c=r.height-a,p=Math.min(Math.max(-r.top/Math.max(c,1),0),1),k=Math.round(p*(N-1));if(k!==ult){ult=k;mostra(k);}}
-var pend=false;window.addEventListener('scroll',function(){if(pend)return;pend=true;requestAnimationFrame(function(){pend=false;passo();});},{passive:true});window.addEventListener('hashchange',function(){setTimeout(passo,300);});window.addEventListener('load',function(){setTimeout(carregar,1500);});passo();})();</script><script id="catalogo-js">
+
+/* ===== perfil do corretor (?c=slug#corretor) ===== */
+.cr-cab{padding-block:clamp(40px,6vw,84px)}
+.cr-grade{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:clamp(28px,5vw,72px);align-items:center}
+.cr-foto{margin:0;position:relative;aspect-ratio:3/4;overflow:hidden;background:linear-gradient(160deg,#efe9df,#e2dbcf)}
+.cr-foto img{width:100%;height:100%;object-fit:cover;display:block}
+.cr-foto img[hidden]{display:none}
+.cr-ini{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:clamp(4rem,9vw,6rem);color:var(--dourado-escuro,#A87B22)}
+.cr-ini:empty{display:none}
+.cr-txt h1{font-size:var(--s-4);margin-top:.4rem}
+.cr-txt .lede{margin-top:1rem;max-width:46ch}
+.cr-areas{list-style:none;margin:1.4rem 0 0;padding:0;display:flex;flex-wrap:wrap;gap:.5rem}
+.cr-areas li{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;padding:.5rem .8rem;border:1px solid var(--linha);background:#fff;color:var(--grafite)}
+.cr-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.6rem;margin-top:1.8rem}
+.cr-bloco .wrap>.eyebrow{margin-bottom:1rem}
+.cr-h2{font-size:var(--s-2);max-width:26ch;margin-bottom:clamp(20px,3vw,32px)}
+.cr-aval{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.cr-aval blockquote{margin:0;background:#fff;border:1px solid var(--linha);padding:22px 24px;font-family:var(--display);font-size:1.15rem;line-height:1.5;color:var(--tinta)}
+.cr-aval blockquote cite{display:block;margin-top:.9rem;font-family:inherit;font-style:normal;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--suave)}
+.cr-aval .cr-sem{font-size:var(--s--1);color:var(--suave);border-top:1px solid var(--linha);padding-top:1rem;max-width:56ch;line-height:1.65}
+.cr-videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
+.cr-vd{margin:0}
+.cr-vd video{width:100%;aspect-ratio:9/16;object-fit:cover;background:#1d1a17;display:block}
+.cr-vd.largo video{aspect-ratio:16/9}
+.cr-vd b{display:block;margin-top:.7rem;font-family:var(--display);font-weight:400;font-size:1.05rem}
+.cr-vd a{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dourado-escuro,#A87B22);text-decoration:none}
+.cr-mais{margin-top:1.4rem}
+.cr-trilho{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin}
+.cr-trilho a{flex:none;width:120px;scroll-snap-align:start;color:inherit;text-decoration:none}
+.cr-trilho .f{display:block;aspect-ratio:3/4;background:#e6e2db;overflow:hidden;margin-bottom:.45rem}
+.cr-trilho img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9);transition:transform .8s cubic-bezier(.16,.84,.32,1)}
+.cr-trilho a:hover img{transform:scale(1.04)}
+.cr-trilho .f i{display:grid;place-items:center;height:100%;font-style:normal;font-family:var(--display);font-size:2rem;color:var(--dourado-escuro,#A87B22)}
+.cr-trilho b{font-family:var(--display);font-weight:400;font-size:.95rem}
+@media (max-width:760px){.cr-grade{grid-template-columns:1fr}.cr-foto{max-width:300px}}
+/* equipe: o card inteiro leva ao perfil */
+.pessoa[data-corretor]{position:relative}
+.pessoa-ver{display:inline-block;margin-top:.6rem;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dourado-escuro,#A87B22);text-decoration:none}
+.pessoa-ver::after{content:"";position:absolute;inset:0;z-index:2}
+.pessoa[data-corretor]:hover h3{color:var(--dourado-escuro,#A87B22)}
+.lx-vert-leg a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+/* faixa de rostos: arrasta para os lados */
+.eq-faixa-acoes{display:flex;align-items:center;gap:.6rem}
+.eq-faixa-acoes .lnk{margin-left:.8rem}
+.eq-seta{all:unset;cursor:pointer;width:42px;height:42px;border-radius:50%;border:1px solid var(--linha);display:grid;place-items:center;background:#fff;transition:border-color .3s,background .3s}
+.eq-seta:hover{border-color:var(--dourado-escuro,#A87B22)}
+.eq-seta:focus-visible{outline:2px solid var(--dourado-escuro,#A87B22);outline-offset:2px}
+.eq-seta svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.eq-trilho.js{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.eq-trilho.js.arrastando{cursor:grabbing}
+.eq-trilho.js .eq-pista{animation:none;will-change:transform}
+.eq-trilho.js img{-webkit-user-drag:none;pointer-events:none}
+@media (max-width:620px){.eq-seta{display:none}.eq-faixa-acoes .lnk{margin-left:0}}
+</style><script id="seq-quadros">(function(){
+/* a chave na mão: os quadros vêm de lx-media/seq/chave.js e são desenhados num canvas,
+   já decodificados, então a tela nunca fica vazia. Os quadros em que as mãos saem de cena foram tirados. */
+var seq=document.getElementById('seq'),tela=document.getElementById('seq-img');if(!seq||!tela||!tela.getContext)return;
+var cx=tela.getContext('2d'),N=37,fr=[],ok=[],pedido=false,alvo=0,agora=-1,rodando=false;window.SEQ_N=N;
+var calmo=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var ultimo=-1;
+function desenha(k){
+  var a=perto(Math.round(k));if(a<0||a===ultimo)return;ultimo=a;
+  cx.drawImage(fr[a],0,0,tela.width,tela.height);
+}
+function perto(i){if(ok[i])return i;for(var d=1;d<N;d++){if(i-d>=0&&ok[i-d])return i-d;if(i+d<N&&ok[i+d])return i+d;}return -1;}
+function passo(){
+  var r=seq.getBoundingClientRect(),h=innerHeight;
+  if(r.top<h*3&&r.bottom>-h)carrega();
+  var p=Math.min(Math.max(-r.top/Math.max(r.height-h,1),0),1);
+  alvo=calmo?Math.round((N-1)*0.75):p*(N-1);
+  if(!rodando){rodando=true;requestAnimationFrame(anima);}
+}
+function anima(){
+  var d=alvo-agora;
+  if(agora<0||Math.abs(d)<0.004){agora=alvo;}else{agora+=d*0.28;}
+  desenha(agora);
+  if(agora!==alvo)requestAnimationFrame(anima);else rodando=false;
+}
+function pronto(i,im){var f=function(){fr[i]=im;ok[i]=true;if(i===0||Math.abs(i-agora)<2){agora=-1;ultimo=-1;passo();}};if(im.decode)im.decode().then(f,f);else im.onload=f;}
+/* o primeiro quadro aparece já, enquanto o resto carrega */
+var q0=new Image();q0.src='lx-media/seq/chave-01.jpg';pronto(0,q0);
+function carrega(){if(pedido)return;pedido=true;
+  window.SEQ_PRONTO=function(){var a=window.SEQ_CHAVE||[];for(var i=1;i<N&&i<a.length;i++){var im=new Image();im.src='data:image/jpeg;base64,'+a[i];pronto(i,im);}};
+  var sc=document.createElement('script');sc.src='lx-media/seq/chave.js';sc.async=true;document.head.appendChild(sc);}
+var pend=false;addEventListener('scroll',function(){if(pend)return;pend=true;requestAnimationFrame(function(){pend=false;passo();});},{passive:true});
+addEventListener('hashchange',function(){setTimeout(passo,300);});addEventListener('load',function(){setTimeout(carrega,1500);});passo();
+})();</script><script id="catalogo-js">
 /* ===================================================================
    CATÁLOGO DE IMÓVEIS
    Uma lista de imóveis, uma busca com filtros, a ficha de cada imóvel
@@ -7032,5 +7175,118 @@ document.addEventListener('click',function(e){var c=e.target.closest&&e.target.c
 document.querySelectorAll('.fx-video video').forEach(function(v){v.addEventListener('ended',function(){v.controls=false;v.load();v.parentNode.classList.remove('tocando');});});})();</script>
 <script>/* equipe: no celular, tocar no retrato alterna para a foto com a casinha */
 (function(){document.addEventListener('click',function(e){var f=e.target.closest&&e.target.closest('.eq-foto');if(!f)return;var a=f.closest('.pessoa');if(a&&f.querySelector('.eq-casa'))a.classList.toggle('ver-casa');});})();</script>
+<script id="perfil-corretor">
+/* Perfil de cada corretor. Os dados saem da própria página Equipe (foto, texto, avaliações
+   do Google) e dos vídeos dos lançamentos. WhatsApp: enquanto não houver o número de cada um,
+   a conversa vai para o WhatsApp da Cris Maciel já com o nome da pessoa. */
+(function(){
+  var pag=document.getElementById('corretor');if(!pag)return;
+  var WA='5519992754241';
+  var WA_PESSOA={}; /* ex.: aline:'5519900000000' quando a Cris passar os números */
+  var ELE={enzo:1,anderson:1,denis:1,felipe:1,lazaro:1};
+  var AREAS={cris:['Direção','Compra e venda','Imóveis fora do Brasil'],enzo:['Direção','Compra e venda'],sandra:['Gerência dos corretores','Lançamentos']};
+  var NO_VIDEO={'Sandra':'sandra','Aline':'aline','Ana':'ana-jamile','Cris':'cris'};
+  var P=null;
+  function dados(){
+    if(P)return P;P={};var ordem=[];
+    document.querySelectorAll('#equipe article.pessoa[data-corretor]').forEach(function(a){
+      var s=a.getAttribute('data-corretor'),img=a.querySelector('.eq-foto img'),ps=a.querySelectorAll('p');
+      var aval=[],pend=false;
+      a.querySelectorAll('.avaliacao').forEach(function(p){if(p.classList.contains('pendente')){pend=true;return;}var b=p.querySelector('b');var t=p.cloneNode(true);var bb=t.querySelector('b');if(bb)bb.remove();aval.push([t.textContent.trim(),b?b.textContent.trim():'']);});
+      var cara=document.querySelector('.eq-cara[data-corretor="'+s+'"] small');
+      var grupo=a.getAttribute('data-grupo')||'';
+      var papel=cara?cara.textContent.trim():(grupo==='Locação'?'Locação':(ELE[s]?'Corretor':'Corretora'));
+      P[s]={slug:s,nome:a.querySelector('h3').textContent.trim(),foto:img?img.getAttribute('src'):'',texto:ps[0]?ps[0].textContent.trim():'',aval:aval,pend:pend,grupo:grupo,papel:papel,ele:!!ELE[s]};
+      ordem.push(s);
+    });
+    P._ordem=ordem;return P;
+  }
+  function videosDe(s){
+    var D=window.__lxDados;if(!D)return [];var out=[];
+    Object.keys(D.vid).forEach(function(id){var e=D.emp.filter(function(x){return x.id===id;})[0];if(!e)return;
+      D.vid[id].forEach(function(v){var m=/^A (Sandra|Aline|Ana|Cris)\b/.exec(v[1]);if(!m||NO_VIDEO[m[1]]!==s)return;
+        var d=/^sandra-/.test(v[0])?'lx-media/':'lx-media/lanc/';
+        out.push({src:d+v[0]+'.mp4',poster:d+v[0]+'.jpg',rot:v[1],leg:v[2],emp:e});});});
+    return out;
+  }
+  function q(k){return pag.querySelector('[data-cr="'+k+'"]');}
+  function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function monta(s){
+    var D=dados(),p=D[s];if(!p){s=D._ordem[0];p=D[s];}if(!p)return;
+    var art=p.ele?'o':'a',dele=p.ele?'dele':'dela';
+    var im=q('foto');if(p.foto){im.src=p.foto;im.alt=p.nome+', da Cris Maciel';im.hidden=false;q('ini').textContent='';}else{im.removeAttribute('src');im.hidden=true;q('ini').textContent=p.nome.charAt(0);}
+    q('papel').textContent=p.papel;q('nome').textContent=p.nome;q('texto').textContent=p.texto;
+    var vs=videosDe(s);
+    var areas=(AREAS[s]||[p.grupo==='Locação'?'Locação':'Compra e venda']).slice();
+    if(vs.length&&areas.indexOf('Lançamentos')<0)areas.push('Lançamentos');
+    q('areas').innerHTML=areas.map(function(a){return '<li>'+esc(a)+'</li>';}).join('');
+    var num=WA_PESSOA[s]||WA,msg='Olá! Vim pelo site da Cris Maciel e gostaria de falar com '+art+' '+p.nome+'.';
+    q('wa').href='https://wa.me/'+num+'?text='+encodeURIComponent(msg);q('wa-t').textContent='Conversar com '+art+' '+p.nome+' no WhatsApp';
+    /* avaliações */
+    q('aval-h').textContent='O que dizem '+dele+' no Google';
+    q('aval').innerHTML=p.aval.length?p.aval.map(function(a){return '<blockquote>'+esc(a[0])+'<cite>'+esc(a[1])+'</cite></blockquote>';}).join(''):
+      '<p class="cr-sem">As avaliações do Google que citam '+art+' '+esc(p.nome)+' pelo nome entram aqui assim que forem selecionadas pela Cris e pelo Enzo.</p>';
+    /* vídeos */
+    var bv=pag.querySelector('[data-cr-bloco="videos"]');bv.hidden=!vs.length;
+    if(vs.length){
+      var emps=[];vs.forEach(function(v){if(emps.indexOf(v.emp.nome)<0)emps.push(v.emp.nome);});
+      q('videos-h').textContent=(emps.length===1?'O lançamento que ':'Os lançamentos que ')+art+' '+p.nome+' apresenta.';
+      var LIM=6;
+      q('videos').innerHTML=vs.map(function(v,i){return '<figure class="cr-vd"'+(i>=LIM?' hidden':'')+'><video controls playsinline preload="none" poster="'+v.poster+'" src="'+v.src+'" aria-label="'+esc(v.rot)+'"></video><b>'+esc(v.emp.nome)+'</b><a href="?emp='+encodeURIComponent(v.emp.id)+'#lancamento-ficha" data-emp="'+esc(v.emp.id)+'">Ver o lançamento</a></figure>';}).join('')+
+        (vs.length>LIM?'<p class="cr-mais"><button type="button" class="lnk" data-cr-mais>Ver os '+vs.length+' vídeos</button></p>':'');
+    }
+    /* outras pessoas */
+    q('outros').innerHTML=D._ordem.filter(function(x){return x!==s;}).map(function(x){var o=D[x];
+      return '<a href="?c='+x+'#corretor" data-corretor="'+x+'"><span class="f">'+(o.foto?'<img src="'+o.foto+'" alt="" loading="lazy">':'<i>'+esc(o.nome.charAt(0))+'</i>')+'</span><b>'+esc(o.nome)+'</b></a>';}).join('');
+    pag.setAttribute('data-c',s);
+    setTimeout(function(){if(location.hash==='#corretor')document.title=p.nome+', '+p.papel.toLowerCase()+' · Cris Maciel';},400);
+  }
+  function doEndereco(){var m=/[?&]c=([^&#]+)/.exec(location.search);return m?decodeURIComponent(m[1]):'';}
+  document.addEventListener('click',function(ev){
+    var a=ev.target.closest&&ev.target.closest('a[data-corretor]');
+    if(a){monta(a.getAttribute('data-corretor'));if(location.hash==='#corretor'){scrollTo(0,0);}return;}
+    var m=ev.target.closest&&ev.target.closest('[data-cr-mais]');
+    if(m){pag.querySelectorAll('.cr-vd[hidden]').forEach(function(f){f.hidden=false;});m.parentNode.remove();}
+  });
+  pag.addEventListener('play',function(ev){pag.querySelectorAll('video').forEach(function(v){if(v!==ev.target)v.pause();});},true);
+  addEventListener('hashchange',function(){if(location.hash!=='#corretor')pag.querySelectorAll('video').forEach(function(v){v.pause();});});
+  addEventListener('popstate',function(){if(location.hash==='#corretor')monta(doEndereco());});
+  function inicia(){monta(doEndereco());}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inicia);else inicia();
+})();
+
+/* faixa de rostos da página inicial: anda sozinha devagar, e dá para arrastar para os dois lados */
+(function(){
+  var tr=document.querySelector('.eq-trilho'),pi=tr&&tr.querySelector('.eq-pista');if(!tr||!pi)return;
+  tr.classList.add('js');
+  var calmo=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var x=0,vel=calmo?0:-0.036,arrasta=false,x0=0,xi=0,movido=false,parado=false,inercia=0,ultX=0,ultT=0,alvo=null,t0=0;
+  function meio(){return pi.scrollWidth/2||1;}
+  function volta(){var m=meio();while(x<=-m)x+=m;while(x>0)x-=m;}
+  function quadro(t){
+    var dt=t0?Math.min(t-t0,64):16;t0=t;
+    if(alvo!==null&&!arrasta){var d=alvo-x;if(Math.abs(d)<0.5){x=alvo;alvo=null;}else x+=d*0.12;}
+    else if(!arrasta){if(Math.abs(inercia)>0.01){x+=inercia*dt;inercia*=0.94;}else if(!parado)x+=vel*dt;}
+    if(alvo===null)volta();
+    pi.style.transform='translate3d('+x.toFixed(2)+'px,0,0)';
+    requestAnimationFrame(quadro);
+  }
+  requestAnimationFrame(quadro);
+  tr.addEventListener('pointerdown',function(e){if(e.button>0)return;arrasta=true;movido=false;x0=e.clientX;xi=x;alvo=null;inercia=0;ultX=e.clientX;ultT=performance.now();tr.classList.add('arrastando');});
+  addEventListener('pointermove',function(e){if(!arrasta)return;var dx=e.clientX-x0;if(Math.abs(dx)>5)movido=true;x=xi+dx;var n=performance.now();if(n>ultT){inercia=(e.clientX-ultX)/(n-ultT);}ultX=e.clientX;ultT=n;});
+  function solta(){if(!arrasta)return;arrasta=false;tr.classList.remove('arrastando');if(performance.now()-ultT>90)inercia=0;inercia=Math.max(-2.5,Math.min(2.5,inercia));}
+  addEventListener('pointerup',solta);addEventListener('pointercancel',solta);
+  /* o clique que termina um arrasto não abre a página (precisa vir antes do roteador, que escuta no document) */
+  window.addEventListener('click',function(e){if(movido&&tr.contains(e.target)){e.preventDefault();e.stopImmediatePropagation();}movido=false;},true);
+  tr.addEventListener('dragstart',function(e){e.preventDefault();});
+  tr.addEventListener('wheel',function(e){if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){e.preventDefault();alvo=null;inercia=0;x-=e.deltaX;}},{passive:false});
+  tr.addEventListener('mouseenter',function(){parado=true;});tr.addEventListener('mouseleave',function(){parado=false;});
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-eq-passo]');if(!b)return;
+    var c=pi.querySelector('.eq-cara'),w=c?c.getBoundingClientRect().width+parseFloat(getComputedStyle(c).marginRight||0):180;
+    var passo=-(+b.getAttribute('data-eq-passo'))*w*2;
+    var m=meio();if(x+passo>0)x-=m;if(x+passo<=-m)x+=m;
+    alvo=x+passo;inercia=0;});
+})();
+</script>
 </body>
 </html>

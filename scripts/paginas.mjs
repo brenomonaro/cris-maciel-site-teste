@@ -107,7 +107,7 @@ function pagina(i, op, lista) {
       <section class="bloco" id="opiniao" aria-labelledby="t-op">
         <h2 id="t-op">A nossa opinião</h2>
         <div class="opiniao">
-          <div class="assina">${retrato(corretor)}<div><b>${esc(corretor)}</b><small>Corretora da Cris Maciel${op.visita ? `, visitou o imóvel em ${dataBR(op.visita)}` : ""}</small></div></div>
+          <div class="assina">${retrato(corretor)}<div><b><a class="perfil" href="${BASE}?c=${slug(corretor)}#corretor">${esc(corretor)}</a></b><small>Corretora da Cris Maciel${op.visita ? `, visitou o imóvel em ${dataBR(op.visita)}` : ""}</small></div></div>
           <div class="quatro">
             ${op.paraQuem ? `<div><h3>Para quem é</h3><p>${esc(op.paraQuem)}</p></div>` : ""}
             ${op.fotoNaoMostra ? `<div><h3>O que a foto não mostra</h3><p>${esc(op.fotoNaoMostra)}</p></div>` : ""}
@@ -196,7 +196,7 @@ ${video}
       <div><p class="rot">${venda ? "Valor de venda" : "Aluguel"}</p><p class="preco">${brl(i.preco)}${venda ? "" : "<small>/mês</small>"}</p></div>
       ${custos.length ? `<dl class="custos">${custos.map((c) => `<div><dt>${c[0]}</dt><dd>${c[1]}</dd></div>`).join("")}</dl>` : ""}
       <div class="acoes"><a class="btn btn--ouro" href="${esc(waVisita)}" target="_blank" rel="noopener">${I.zap}Agendar uma visita</a><a class="btn btn--claro" href="${esc(waDuvida)}" target="_blank" rel="noopener">Tirar uma dúvida</a></div>
-      ${corretor ? `<div class="quem">${retrato(corretor)}<div>Quem cuida deste imóvel<b>${esc(corretor)}</b></div></div>` : ""}
+      ${corretor ? `<a class="quem" href="${BASE}?c=${slug(corretor)}#corretor">${retrato(corretor)}<div>Quem cuida deste imóvel<b>${esc(corretor)}</b><small>Ver o perfil</small></div></a>` : ""}
       <div class="pe-valor"><span>Cód. ${esc(i.cod)}</span><button type="button" class="compartilhar" data-compartilhar>${I.enviar}<span>Compartilhar</span></button></div>
       <p class="nota">Valores informados pelo proprietário e sujeitos a alteração.</p>
     </aside>
