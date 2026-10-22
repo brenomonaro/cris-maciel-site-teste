@@ -165,7 +165,17 @@ async function buscaTudo(token) {
   return itens;
 }
 
+// resumo para o log do GitHub: só contagens, nenhum dado de imóvel ou de pessoa
+function resumo(itens) {
+  const c = converteTodos(itens);
+  const n = (f) => c.filter(f).length;
+  return `publicados recebidos: ${itens.length}; sem código: ${n((i) => !i.cod)}; sem foto: ${n((i) => !i.fotos.length)}; ` +
+    `sem valor: ${n((i) => !(i.preco > 0))}; venda: ${n((i) => i.fin === "venda")}; locação: ${n((i) => i.fin === "locacao")}`;
+}
+const converteTodos = (itens) => itens.map(converte);
+
 export function grava(itens, saida, fs, path) {
+  console.log("C2S, " + resumo(itens));
   const vistos = new Set();
   const lista = itens.map(converte).filter((i) => {
     if (!i.cod || !i.fotos.length || !(i.preco > 0) || vistos.has(i.cod)) return false;
@@ -197,6 +207,14 @@ async function principal() {
     return;
   }
   const itens = await buscaTudo(token);
+  if (!itens.length) {
+    // ajuda a entender por que veio vazio: quantos imóveis existem no cadastro (publicados ou não). Só a contagem.
+    try {
+      const r = await fetch(`${BASE}/api/v1/properties?per_page=1`, { headers: { Accept: "application/json", Authorization: `Bearer ${token}` } });
+      const j = r.ok ? await r.json() : null;
+      console.log(`C2S: 0 imóveis publicados no site; no cadastro geral há ${j?.pagination?.total_count ?? "?"} (resposta ${r.status}).`);
+    } catch {}
+  }
   const lista = grava(itens, saida, fs, path);
   console.log(`${lista.length} imóveis gravados (de ${itens.length} publicados no C2S).`);
 }
