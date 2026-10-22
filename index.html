@@ -4214,12 +4214,25 @@ html,body{background-color:var(--creme)}
     burger.setAttribute('aria-expanded','false');
     var atual = document.getElementById(id);
     if(atual) revelar(atual);
+    window.__paginaAtual = id;
+    var y = window.__alvoY; window.__alvoY = null;
     window.scrollTo(0,0);
     if(window.__voltarAtualiza) window.__voltarAtualiza(id);
+    if(typeof y === 'number' && y > 0) volta(y);
     var titulo = atual && atual.querySelector('h1');
     if(titulo){ titulo.setAttribute('tabindex','-1'); try{ titulo.focus({preventScroll:true}); }catch(e){} }
   }
 
+
+  /* volta para o ponto da página de onde a pessoa saiu. Repete por meio segundo porque
+     fotos e blocos que montam com o scroll ainda podem mudar a altura da página. */
+  var mexeu = false;
+  ['wheel','touchstart','keydown'].forEach(function(ev){ addEventListener(ev, function(){ mexeu = true; }, {passive:true}); });
+  function volta(y){
+    mexeu = false;
+    var vezes = [0, 60, 160, 320, 520];
+    vezes.forEach(function(ms){ setTimeout(function(){ if(mexeu) return; requestAnimationFrame(function(){ if(Math.abs(scrollY - y) > 2) window.scrollTo(0, y); }); }, ms); });
+  }
 
   burger.addEventListener('click', function(){
     var aberto = nav.classList.toggle('aberto');
@@ -4235,6 +4248,7 @@ html,body{background-color:var(--creme)}
   var NOME = {'corretor':'o perfil','inicio':'o início','historia':'Nossa história','processo':'Como conduzimos','imoveis':'Imóveis','busca':'a busca de imóveis','imovel':'o imóvel','lancamentos':'Lançamentos','lancamento-ficha':'o lançamento','restrita':'a Área restrita','restrita-acesso':'o pedido de acesso','restrita-ficha':'a ficha','proprietario':'Anunciar meu imóvel','administracao':'Administração','permuta':'Permuta','internacional':'Fora do Brasil','equipe':'Equipe','trabalhe':'Trabalhe conosco','contato':'Contato','privacidade':'Privacidade'};
   var pilha = [];
   function destinoDe(id){ return pilha.length > 1 ? pilha[pilha.length-2] : (PAI[id] || 'inicio'); }
+  window.__ehVolta = function(id){ return pilha.length > 1 && pilha[pilha.length-2] === id; };
   window.__voltarAtualiza = function(id){
     if(pilha.length > 1 && pilha[pilha.length-2] === id) pilha.pop();
     else if(pilha[pilha.length-1] !== id) pilha.push(id);
@@ -4248,6 +4262,7 @@ html,body{background-color:var(--creme)}
     var id = (location.hash || '#inicio').slice(1);
     var d = destinoDe(id);
     if(pilha.length > 1) pilha.pop(); else pilha = [];
+    window.__voltaForcada = true;
     if(window.__navegar) window.__navegar(d); else { location.hash = '#' + d; }
   });
 
@@ -4558,15 +4573,29 @@ html,body{background-color:var(--creme)}
   /* ?imovel=CODIGO e ?emp=ID ficam no endereço só enquanto a ficha está aberta (link para compartilhar) */
   function semParam(q,k){ return (q||'').replace(new RegExp('([?&])'+k+'=[^&]*&?'),'$1').replace(/[?&]$/,''); }
   function limpaBusca(q,id){ if(id!=='imovel') q=semParam(q,'imovel'); if(id!=='lancamento-ficha') q=semParam(q,'emp'); if(id!=='corretor') q=semParam(q,'c'); return q; }
+  /* posição de cada página quando a pessoa saiu dela (para voltar ao mesmo ponto) */
+  var POS = {};
   function navegar(id, empurrar, busca){
     if(id === 'busca') id = 'imoveis';
     if(!paginaExiste(id)) id = 'nao-encontrado';
     var atual = (location.hash || '#inicio').slice(1);
+    clearTimeout(guardaT);
+    var saindo = window.__paginaAtual || atual;
+    if(saindo !== id) POS[saindo] = window.scrollY;
+    if(empurrar === false){
+      var st = history.state;
+      window.__alvoY = (st && typeof st.y === 'number') ? st.y : (POS[id] || 0);
+    } else {
+      var ehVolta = window.__voltaForcada || (window.__ehVolta && window.__ehVolta(id));
+      window.__voltaForcada = false;
+      window.__alvoY = ehVolta ? (POS[id] || 0) : null;
+      try{ history.replaceState(Object.assign({}, history.state || {}, {pagina: saindo, y: window.scrollY}), ''); }catch(e){}
+    }
     if(empurrar !== false){
       var q = (typeof busca === 'string' && busca) ? busca : limpaBusca(location.search, id);
       try{ history.pushState({pagina:id}, '', location.pathname + q + '#' + id); }catch(e){}
     }
-    if(calmo || !cortina || ocupado || atual === id){ trocar(id); return; }
+    if(calmo || !cortina || ocupado || saindo === id){ trocar(id); return; }
     ocupado = true;
     cortina.classList.remove('sai');
     cortina.classList.add('entra');
@@ -4597,6 +4626,12 @@ html,body{background-color:var(--creme)}
   window.addEventListener('popstate', function(){
     navegar((location.hash || '#inicio').slice(1), false);
   });
+  try{ if('scrollRestoration' in history) history.scrollRestoration = 'manual'; }catch(e){}
+  var guardaT = null;
+  window.addEventListener('scroll', function(){
+    clearTimeout(guardaT);
+    guardaT = setTimeout(function(){ try{ history.replaceState(Object.assign({}, history.state || {}, {y: window.scrollY}), ''); }catch(e){} }, 450);
+  }, {passive:true});
 
   try{ history.replaceState({pagina:(location.hash || '#inicio').slice(1)}, '', location.hash || '#inicio'); }catch(e){}
 
