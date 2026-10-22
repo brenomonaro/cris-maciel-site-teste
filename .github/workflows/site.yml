@@ -1,7 +1,7 @@
-# Publica o site no GitHub Pages e atualiza os imóveis da Kenlo a cada 30 minutos.
-# A chave da Kenlo fica nos segredos do repositório (Settings > Secrets and variables > Actions):
-#   KENLO_API_KEY e KENLO_USER_INFO. Sem eles, o site sai com os imóveis de exemplo.
-# Os últimos imóveis que deram certo ficam guardados no ramo "dados". Se a Kenlo falhar, o site usa esses.
+# Publica o site no GitHub Pages e atualiza os imóveis do C2S a cada 30 minutos.
+# O token do C2S fica no segredo do repositório (Settings > Secrets and variables > Actions):
+#   C2S_IMOB_TOKEN. Sem ele, o site sai com os imóveis de exemplo.
+# Os últimos imóveis que deram certo ficam guardados no ramo "dados". Se o C2S falhar, o site usa esses.
 # Em Settings > Pages, "Source" precisa estar em "GitHub Actions".
 name: Site
 
@@ -34,11 +34,10 @@ jobs:
         with:
           node-version: 20
 
-      - name: Buscar os imóveis na Kenlo
+      - name: Buscar os imóveis no C2S
         env:
-          KENLO_API_KEY: ${{ secrets.KENLO_API_KEY }}
-          KENLO_USER_INFO: ${{ secrets.KENLO_USER_INFO }}
-        run: node scripts/kenlo.mjs _dados
+          C2S_IMOB_TOKEN: ${{ secrets.C2S_IMOB_TOKEN }}
+        run: node scripts/c2s.mjs _dados
 
       - name: Guardar os imóveis novos ou usar os últimos que deram certo
         run: |
@@ -46,16 +45,16 @@ jobs:
             cd _dados
             git init -q -b dados
             git add -A
-            git -c user.name="Site Cris Maciel" -c user.email="site@users.noreply.github.com" commit -qm "Imóveis da Kenlo"
+            git -c user.name="Site Cris Maciel" -c user.email="site@users.noreply.github.com" commit -qm "Imóveis do C2S"
             git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" dados
             rm -rf .git
             cd ..
-          elif git fetch -q origin dados 2>/dev/null; then
+          elif git fetch -q origin dados 2>/dev/null && git show origin/dados:imoveis.json 2>/dev/null | grep -q '"fonte":"C2S"'; then
             mkdir -p _dados
             git archive origin/dados | tar -x -C _dados
-            echo "Usando os últimos imóveis guardados."
+            echo "Usando os últimos imóveis do C2S guardados."
           else
-            echo "Ainda não há imóveis da Kenlo guardados: o site sai com os exemplos."
+            echo "Ainda não há imóveis do C2S guardados: o site sai com os exemplos."
           fi
 
       - name: Gerar a página própria de cada imóvel

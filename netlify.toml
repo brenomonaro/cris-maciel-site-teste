@@ -1,5 +1,0 @@
-# Usado só quando o site sobe pelo GitHub ou pela linha de comando do Netlify
-# (o "arrastar a pasta" ignora este arquivo e a pasta netlify/).
-[build]
-  publish = "."
-  functions = "netlify/functions"

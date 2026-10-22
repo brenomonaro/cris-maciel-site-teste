@@ -2275,13 +2275,13 @@ html,body{background-color:var(--creme)}
         <p class="eyebrow">Imóveis</p>
         <h2 style="font-size:var(--s-3)" class="monta">Imóveis e lançamentos em Indaiatuba.</h2>
       </div>
-      <div class="destaques r"><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda da Kenlo</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda da Kenlo</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda da Kenlo</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article></div>
+      <div class="destaques r"><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda do C2S</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda do C2S</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda do C2S</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article></div>
       <div class="actions">
         <a class="btn" href="#busca" data-vt-fin="venda">Imóveis à venda</a>
         <a class="btn btn--ghost" href="#busca" data-vt-fin="locacao">Imóveis para alugar</a>
       </div>
       <a class="home-lanc r" href="#lancamentos" style="text-decoration:none;color:inherit"><p><b>Lançamentos</b>Só está aqui o que a gente recomenda.</p><span class="lnk">Ver lançamentos</span></a>
-      <p class="muted">Três destaques vindos da Kenlo, escolhidos a dedo. Poucas peças e bem fotografadas comunicam padrão.</p>
+      <p class="muted">Três destaques do nosso cadastro, escolhidos a dedo. Poucas peças e bem fotografadas comunicam padrão.</p>
     </div>
   </div>
 
@@ -2632,7 +2632,7 @@ html,body{background-color:var(--creme)}
 <section class="page" id="imoveis" hidden>
   <!-- CATÁLOGO DE IMÓVEIS · prefixo ct-
        Os cartões e a ficha são montados pelo script "catalogo-js" a partir da lista de imóveis.
-       Hoje a lista é de exemplo; no site publicado ela vem da API da Kenlo (ver deKenlo no script). -->
+       Hoje a lista é de exemplo; no site publicado ela vem do C2S (scripts/c2s.mjs no GitHub). -->
   <header class="ct-topo">
     <div class="ct-topo-foto" aria-hidden="true"></div>
     <div class="ct-in ct-topo-in">
@@ -4910,7 +4910,7 @@ html,body{background-color:var(--creme)}
     'Três imóveis por vez',
     'Todos em condomínio com regra',
     'Sem promessa de prazo',
-    'Três destaques vindos da Kenlo'
+    'Três destaques do nosso cadastro'
   ];
 
   function ehConteudo(t){
@@ -5538,7 +5538,7 @@ html,body{background-color:var(--creme)}
    Lançamentos mais diretos (30/09/2026).
    EMP: a lista dos empreendimentos. Só entra o que já se sabe; o que
    falta vem do book (entrega, registro, valor) ou da Sandra (leitura).
-   Na integração, esta lista vira dado da Kenlo ou do book, e as
+   Na integração, esta lista vira dado do C2S ou do book, e as
    leituras são escritas pela Sandra e pelo corretor responsável.
 ---------------------------------------------------------------- */
 (function(){
@@ -6747,17 +6747,18 @@ addEventListener('hashchange',function(){setTimeout(passo,300);});addEventListen
      destaque   true para aparecer na página inicial
      data       data de cadastro 'AAAA-MM-DD' (ordena "mais recentes")
 
-   PARA LIGAR NA API DA KENLO: troque a lista de exemplo pela resposta
-   da API passando cada item por deKenlo(). Os nomes dos campos da Kenlo
-   abaixo são provisórios e precisam ser conferidos na documentação.
-   A chave da API nunca fica nesta página: a chamada sai de um endereço
-   do servidor da hospedagem, que guarda a chave.
+   DE ONDE VÊM OS IMÓVEIS: do C2S (crm.c2sapp.com). No GitHub, o scripts/c2s.mjs
+   busca a cada 30 minutos os imóveis publicados no site, já traduz cada um
+   para este formato e grava imoveis.json (lido pela meta cm-api). O token do
+   C2S fica só no segredo C2S_IMOB_TOKEN do GitHub, nunca nesta página.
+   O adaptador deKenlo() abaixo é da integração antiga; itens que já chegam
+   no formato interno passam direto por ele.
 =================================================================== */
 (function(){
 'use strict';
 var WA='5519992754241';
 
-/* ---------- adaptador da Kenlo (provisório: conferir nomes dos campos) ---------- */
+/* ---------- adaptador antigo da Kenlo (fica por segurança; o C2S já chega traduzido) ---------- */
 function num(v){ if(v==null||v==='') return 0; if(typeof v==='number') return v; if(typeof v==='object') return num(v.value); var t=String(v).trim(); if(/^-?\d+(\.\d+)?$/.test(t)) return parseFloat(t); var n=parseFloat(t.replace(/\./g,'').replace(',','.')); return isNaN(n)?0:n; }
 /* Kenlo Open API v2 (https://kenlo-open-api-prd.kenlo.io/docs/v2.html). A função do Supabase junta o anúncio
    (GET /v2/listings) com o imóvel do CRM (GET /v2/properties) e tira os dados pessoais. Aqui cada item vira o
@@ -6888,7 +6889,7 @@ function guardaSalvos(){ try{ localStorage.setItem('cm-salvos',JSON.stringify(SA
 function nSalvos(){ return Object.keys(SALVOS).filter(function(c){return PORCOD[c];}).length; }
 
 /* ---------- cartão ---------- */
-/* página própria (imovel/CODIGO/) quando o site é gerado pelo GitHub com os imóveis da Kenlo; senão, a ficha dentro do site */
+/* página própria (imovel/CODIGO/) quando o site é gerado pelo GitHub com os imóveis do C2S; senão, a ficha dentro do site */
 function paginaPropria(i){ return i.pagina || (API && /\.json(\?|$)/.test(API) ? 'imovel/'+String(i.cod).replace(/[^A-Za-z0-9_-]/g,'_')+'/' : ''); }
 function linkImovel(i){ return paginaPropria(i) || '?imovel='+encodeURIComponent(i.cod)+'#imovel'; }
 function cartao(i){
@@ -7122,7 +7123,7 @@ function destaques(){
 }
 
 /* ---------- começa ---------- */
-/* no site publicado: tenta a lista real em /api/imoveis (função do servidor que fala com a Kenlo).
+/* no site publicado: tenta a lista real em /api/imoveis (lista gerada pelo GitHub a partir do C2S).
    Se não existir ou falhar, ficam os exemplos. */
 var API='';
 function apiEndereco(){

@@ -1,9 +1,9 @@
 // Gera uma página própria para cada imóvel: imovel/CODIGO/index.html
 // Roda no GitHub Actions depois do scripts/kenlo.mjs (e também sozinho, para testar o modelo).
 //   node scripts/paginas.mjs _site
-// Lê: _site/imoveis.json (lista leve) e _site/imovel/CODIGO.json (imóvel completo, vindo da Kenlo),
+// Lê: _site/imoveis.json (lista leve) e _site/imovel/CODIGO.json (imóvel completo, vindo do C2S pelo scripts/c2s.mjs),
 //     exemplos/*.json (imóveis de exemplo, só para aprovar o desenho) e opinioes/CODIGO.json (a opinião assinada).
-// A opinião não vem da Kenlo: fica em opinioes/, um arquivo por código, escrito pelo corretor que visitou.
+// A opinião não vem do C2S: fica em opinioes/, um arquivo por código, escrito pelo corretor que visitou.
 // Variáveis: SITE_URL (endereço do site, para o Google e o WhatsApp), SITE_INDEXAR=1 (libera o Google; sem ela, noindex).
 import fs from "node:fs";
 import path from "node:path";
@@ -38,6 +38,13 @@ const I = {
   zap: '<svg class="ico" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9.5 9.5c.3 1.8 2.2 3.7 4 4l1-1 1.8.8-.3 1.4c-3 .3-6.6-3.3-6.3-6.3l1.4-.3.8 1.8z"/></svg>',
   enviar: '<svg class="ico" viewBox="0 0 24 24"><path d="M12 4v11M7 9l5-5 5 5M5 14v5h14v-5"/></svg>',
 };
+
+// quem tem perfil no site (página Equipe); os outros aparecem sem link
+const PERFIS = ["cris", "enzo", "sandra", "adriana", "aline", "ana-jamile", "anderson", "cynthia", "denis", "felipe", "flavia",
+  "josiane", "karen", "lazaro", "monica", "vanessa", "katia", "ana-flavia", "amanda"];
+const ELES = ["enzo", "anderson", "denis", "felipe", "lazaro"];
+const temPerfil = (nome) => PERFIS.includes(slug(nome));
+const nomeComLink = (nome) => temPerfil(nome) ? `<a class="perfil" href="${BASE}?c=${slug(nome)}#corretor">${esc(nome)}</a>` : esc(nome);
 
 function retrato(nome) {
   if (!nome) return "";
@@ -107,7 +114,7 @@ function pagina(i, op, lista) {
       <section class="bloco" id="opiniao" aria-labelledby="t-op">
         <h2 id="t-op">A nossa opinião</h2>
         <div class="opiniao">
-          <div class="assina">${retrato(corretor)}<div><b><a class="perfil" href="${BASE}?c=${slug(corretor)}#corretor">${esc(corretor)}</a></b><small>Corretora da Cris Maciel${op.visita ? `, visitou o imóvel em ${dataBR(op.visita)}` : ""}</small></div></div>
+          <div class="assina">${retrato(corretor)}<div><b>${nomeComLink(corretor)}</b><small>${ELES.includes(slug(corretor)) ? "Corretor" : "Corretora"} da Cris Maciel${op.visita ? `, visitou o imóvel em ${dataBR(op.visita)}` : ""}</small></div></div>
           <div class="quatro">
             ${op.paraQuem ? `<div><h3>Para quem é</h3><p>${esc(op.paraQuem)}</p></div>` : ""}
             ${op.fotoNaoMostra ? `<div><h3>O que a foto não mostra</h3><p>${esc(op.fotoNaoMostra)}</p></div>` : ""}
@@ -115,7 +122,7 @@ function pagina(i, op, lista) {
             ${op.naoServe ? `<div class="nao"><h3>Para quem não serve</h3><p>${esc(op.naoServe)}</p></div>` : ""}
           </div>
           ${op.avaliacao && op.avaliacao.texto ? `<blockquote class="google"><span class="estrelas" aria-label="5 estrelas">★★★★★</span><p>${esc(op.avaliacao.texto)}</p><footer>${esc(op.avaliacao.autor)}, avaliação no Google${op.avaliacao.data ? ", " + esc(op.avaliacao.data) : ""}</footer></blockquote>`
-            : i.exemplo ? `<div class="google falta">Aqui entra uma avaliação real do Google que cite a ${esc(corretor)} pelo nome. Ainda não temos uma, então o espaço fica vazio no site.</div>` : ""}
+            : i.exemplo ? `<div class="google falta">Aqui entra uma avaliação real do Google que cite ${ELES.includes(slug(corretor)) ? "o" : "a"} ${esc(corretor)} pelo nome. Ainda não temos uma, então o espaço fica vazio no site.</div>` : ""}
         </div>
       </section>` : "";
 
@@ -196,7 +203,7 @@ ${video}
       <div><p class="rot">${venda ? "Valor de venda" : "Aluguel"}</p><p class="preco">${brl(i.preco)}${venda ? "" : "<small>/mês</small>"}</p></div>
       ${custos.length ? `<dl class="custos">${custos.map((c) => `<div><dt>${c[0]}</dt><dd>${c[1]}</dd></div>`).join("")}</dl>` : ""}
       <div class="acoes"><a class="btn btn--ouro" href="${esc(waVisita)}" target="_blank" rel="noopener">${I.zap}Agendar uma visita</a><a class="btn btn--claro" href="${esc(waDuvida)}" target="_blank" rel="noopener">Tirar uma dúvida</a></div>
-      ${corretor ? `<a class="quem" href="${BASE}?c=${slug(corretor)}#corretor">${retrato(corretor)}<div>Quem cuida deste imóvel<b>${esc(corretor)}</b><small>Ver o perfil</small></div></a>` : ""}
+      ${corretor ? (temPerfil(corretor) ? `<a class="quem" href="${BASE}?c=${slug(corretor)}#corretor">${retrato(corretor)}<div>Quem cuida deste imóvel<b>${esc(corretor)}</b><small>Ver o perfil</small></div></a>` : `<div class="quem">${retrato(corretor)}<div>Quem cuida deste imóvel<b>${esc(corretor)}</b></div></div>`) : ""}
       <div class="pe-valor"><span>Cód. ${esc(i.cod)}</span><button type="button" class="compartilhar" data-compartilhar>${I.enviar}<span>Compartilhar</span></button></div>
       <p class="nota">Valores informados pelo proprietário e sujeitos a alteração.</p>
     </aside>
