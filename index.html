@@ -2214,6 +2214,152 @@ html,body{background-color:var(--creme)}
   .capa--lado .wrap{position:relative;padding-top:28px;padding-bottom:36px}
 }
 </style>
+<style id="caminho">
+/* ===================================================================
+   O CAMINHO (23/11/2026)
+   Menu em cinco entradas, por intenção de quem chega. As páginas da
+   casa (história, como conduzimos, equipe) viram uma sequência só,
+   com trilho no alto e "a seguir" no fim. Na página inicial, três
+   atalhos logo abaixo da abertura e um marcador lateral de capítulos.
+   Camada única: pode ser retirada inteira (junto com script#caminho-js).
+=================================================================== */
+
+/* ---------- menu ---------- */
+.nav-g{position:relative;display:flex;align-items:center}
+.nav-seta{width:9px;height:9px;margin-left:6px;opacity:.6;transition:transform .3s cubic-bezier(.2,.6,.2,1)}
+.nav-sub a::after{display:none!important}
+.nav-sub a{display:grid;text-decoration:none;color:var(--tinta)}
+.nav-sub b{font-weight:500}
+.nav-sub small{color:var(--t-82,#5f5a58)}
+.nav-sub i{font-family:var(--display);font-style:normal;color:var(--ouro-texto,#8A6316)}
+.nav-g.ativo>.nav-pai::after,.nav>a.ativo::after{transform:scaleX(1);transform-origin:0 50%}
+
+@media (min-width:821px){
+  .nav{gap:clamp(18px,2.6vw,38px)!important}
+  .nav a.nav-pai,.nav>a{font-size:.8125rem!important;letter-spacing:.01em!important}
+  .nav-pai{display:inline-flex;align-items:center}
+  .nav-sub{position:absolute;top:100%;left:-22px;z-index:60;width:max-content;min-width:290px;max-width:340px;
+    margin-top:14px;padding:8px;background:#FBF9F5;border:1px solid var(--linha);
+    box-shadow:var(--sombra-2,0 30px 46px -24px rgba(71,67,66,.32));
+    opacity:0;visibility:hidden;transform:translateY(6px);
+    transition:opacity .25s ease,transform .3s cubic-bezier(.2,.6,.2,1),visibility 0s linear .3s}
+  .nav-sub::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
+  .nav-g--fim .nav-sub{left:auto;right:-22px}
+  .nav-g:hover:not(.fechado)>.nav-sub,.nav-g:focus-within:not(.fechado)>.nav-sub{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+  .nav-g:hover:not(.fechado) .nav-seta,.nav-g:focus-within:not(.fechado) .nav-seta{transform:rotate(180deg)}
+  .nav-sub a{gap:2px;padding:12px 14px;white-space:normal;font-size:.875rem!important;letter-spacing:0!important;transition:background .2s}
+  .nav-sub a:hover,.nav-sub a:focus-visible{background:rgba(200,151,55,.09);color:var(--tinta)}
+  .nav-sub small{font-size:.75rem;line-height:1.45}
+  .nav-sub--passos a{grid-template-columns:2.1rem 1fr;column-gap:4px}
+  .nav-sub--passos i{grid-row:1/3;font-size:1.05rem;line-height:1.3}
+  .nav-sub--passos small{grid-column:2}
+  .nav-sub a[aria-current="page"] b{color:var(--ouro-texto,#8A6316)}
+}
+@media (max-width:820px){
+  .nav{max-height:calc(100dvh - 60px);overflow-y:auto;overscroll-behavior:contain}
+  .nav-g{display:block;width:100%;border-bottom:1px solid var(--linha);padding-bottom:10px}
+  .nav-g>.nav-pai{border-bottom:0!important;padding-bottom:4px!important;display:block}
+  .nav-seta{display:none}
+  .nav-sub{display:flex;flex-wrap:wrap;gap:0 18px}
+  .nav-sub a{width:auto!important;border-bottom:0!important;padding-block:9px!important;min-height:40px;align-content:center;font-size:.8125rem;color:var(--t-82,#5f5a58)}
+  .nav-sub a[aria-current="page"]{color:var(--ouro-texto,#8A6316)}
+  .nav-sub small{display:none}
+  .nav-sub--passos a{grid-template-columns:auto auto;column-gap:6px;align-items:baseline}
+  .nav-sub i{font-size:.8125rem}
+  .nav>a,.nav-g>.nav-pai{font-family:var(--display);font-size:1.15rem!important;letter-spacing:0}
+}
+
+/* ---------- três atalhos logo abaixo da abertura ---------- */
+.rumos{position:relative;z-index:5;display:grid;grid-template-columns:repeat(3,1fr);
+  width:min(1120px,calc(100% - 2*var(--gut)));margin:-46px auto 0;
+  background:#FBF9F5;border:1px solid var(--linha);box-shadow:var(--sombra-1),var(--luz-borda,none)}
+.rumos a{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(18px,2.4vw,30px);
+  text-decoration:none;color:var(--tinta);transition:background .25s}
+.rumos a+a{border-left:1px solid var(--linha)}
+.rumos span{display:grid;gap:3px}
+.rumos b{font-family:var(--display);font-weight:400;font-size:clamp(1.02rem,1.35vw,1.2rem);line-height:1.25}
+.rumos small{font-family:var(--corpo);font-size:.75rem;letter-spacing:.02em;color:var(--t-82,#5f5a58)}
+.rumos .ico{flex:0 0 auto;width:18px;height:18px;margin:0;color:var(--dourado-escuro);transition:transform .35s cubic-bezier(.2,.6,.2,1)}
+.rumos a:hover,.rumos a:focus-visible{background:rgba(200,151,55,.08)}
+.rumos a:hover .ico,.rumos a:focus-visible .ico{transform:translateX(5px)}
+@media (min-width:821px){#inicio .rolar{display:none}}
+@media (max-width:820px){
+  .rumos{grid-template-columns:1fr;margin-top:18px}
+  .rumos a{padding:16px 18px}
+  .rumos a+a{border-left:0;border-top:1px solid var(--linha)}
+}
+
+/* ---------- trilho das páginas da casa ---------- */
+.cam-trilho{border-bottom:1px solid var(--linha)}
+.cam-trilho ol{list-style:none;margin:0 auto;padding:0 var(--gut);max-width:1120px;box-sizing:border-box;display:flex;align-items:stretch;gap:clamp(18px,4vw,56px);overflow-x:auto;scrollbar-width:none}
+.cam-trilho ol::-webkit-scrollbar{display:none}
+.cam-trilho li{flex:0 0 auto}
+.cam-trilho a{position:relative;display:flex;align-items:baseline;gap:9px;padding:18px 0 16px;text-decoration:none;
+  font-family:var(--corpo);font-size:.8125rem;color:var(--t-82,#5f5a58);white-space:nowrap}
+.cam-trilho i{font-family:var(--display);font-style:normal;font-size:.95rem;color:var(--ouro-texto,#8A6316)}
+.cam-trilho a::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--dourado);transform:scaleX(0);transform-origin:0 50%;transition:transform .45s cubic-bezier(.2,.6,.2,1)}
+.cam-trilho a:hover{color:var(--tinta)}
+.cam-trilho a:hover::after{transform:scaleX(.35)}
+.cam-trilho a[aria-current="page"]{color:var(--tinta);font-weight:500}
+.cam-trilho a[aria-current="page"]::after{transform:scaleX(1)}
+.cam-trilho .cam-nome{margin-right:clamp(4px,2vw,24px);display:flex;align-items:baseline;padding:18px 0 16px;font-family:var(--corpo);font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--t-82,#5f5a58)}
+@media (max-width:560px){.cam-trilho .cam-nome{display:none}}
+
+/* ---------- "a seguir", no fim da página ---------- */
+.cam-seguir{border-top:1px solid var(--linha)}
+.cam-seguir a{display:grid;grid-template-columns:1fr auto;align-items:center;gap:clamp(20px,4vw,56px);
+  max-width:1120px;box-sizing:border-box;margin:0 auto;padding:clamp(44px,7vw,92px) var(--gut);text-decoration:none;color:var(--tinta)}
+.cam-seguir .cam-rot{display:block;font-family:var(--corpo);font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ouro-texto,#8A6316);margin-bottom:14px}
+.cam-seguir strong{display:block;font-family:var(--display);font-weight:400;font-size:clamp(2rem,5.2vw,4rem);line-height:1.05;letter-spacing:-.015em}
+.cam-seguir strong span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .6s cubic-bezier(.2,.6,.2,1)}
+.cam-seguir a:hover strong span,.cam-seguir a:focus-visible strong span{background-size:100% 1px}
+.cam-seguir em{display:block;font-family:"Lora",Georgia,serif;font-style:normal;font-size:1.0625rem;line-height:1.55;color:var(--t-87,#55504f);margin-top:14px;max-width:46ch}
+.cam-seguir .cam-bola{width:clamp(56px,7vw,84px);aspect-ratio:1;border:1px solid var(--dourado);border-radius:50%;display:grid;place-items:center;color:var(--dourado-escuro);transition:background .35s,color .35s,transform .45s cubic-bezier(.2,.6,.2,1)}
+.cam-seguir .cam-bola svg{width:34%;height:34%}
+.cam-seguir a:hover .cam-bola,.cam-seguir a:focus-visible .cam-bola{background:var(--dourado);color:#231d10;transform:translateX(8px)}
+@media (max-width:560px){.cam-seguir a{grid-template-columns:1fr}.cam-seguir .cam-bola{width:52px}}
+
+/* ---------- marcador de capítulos da página inicial ---------- */
+.cam-rail{position:fixed;right:20px;top:50%;z-index:30;transform:translateY(-50%);display:none;flex-direction:column;align-items:flex-end;gap:0;
+  opacity:0;pointer-events:none;transition:opacity .5s}
+.cam-rail.visivel{opacity:1;pointer-events:auto}
+.cam-rail button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:flex-end;gap:10px;height:22px}
+.cam-rail button::after{content:"";width:16px;height:1px;background:var(--tinta);opacity:.32;transition:width .45s cubic-bezier(.2,.6,.2,1),opacity .3s,background .3s}
+.cam-rail span{font-family:var(--corpo);font-size:.75rem;letter-spacing:.02em;color:var(--tinta);white-space:nowrap;opacity:0;transform:translateX(6px);transition:opacity .35s,transform .45s cubic-bezier(.2,.6,.2,1)}
+.cam-rail button.atual::after{width:34px;height:2px;background:var(--dourado);opacity:1}
+.cam-rail button.atual span{opacity:1;transform:none;font-weight:500}
+.cam-rail button.proximo span{opacity:.62;transform:none}
+.cam-rail button.proximo::after{width:22px;opacity:.5}
+.cam-rail:hover span,.cam-rail:focus-within span{opacity:.8;transform:none}
+.cam-rail button:hover::after{width:34px;opacity:.8}
+.cam-rail button:focus-visible{outline:1px solid var(--dourado);outline-offset:3px}
+@media (min-width:1240px) and (hover:hover){.cam-rail{display:flex}}
+
+@media (prefers-reduced-motion:reduce){
+  .nav-sub,.nav-seta,.rumos .ico,.cam-trilho a::after,.cam-seguir strong span,.cam-seguir .cam-bola,.cam-rail,.cam-rail span,.cam-rail button::after{transition:none!important}
+}
+
+/* ---------- segunda rodada (23/11): topo, trilha, lançamentos no celular ---------- */
+.topo-zap{display:none;box-sizing:border-box;height:38px;padding:0 16px;border-radius:999px;align-items:center;gap:8px;text-decoration:none;
+  background:var(--dourado);color:#231d10;font-family:var(--corpo);font-size:.75rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+  transition:background .25s,transform .25s}
+.topo-zap svg{width:16px;height:16px}
+.topo-zap:hover{background:#d3a548}
+.topo-zap:active{transform:translateY(1px)}
+.topo-zap:focus-visible{outline:2px solid var(--dourado-escuro,#A87B22);outline-offset:2px}
+@media (min-width:821px){
+  .topo-zap{display:inline-flex}
+  .topo-conta:not(.logado){padding:0;width:38px}
+  .topo-conta:not(.logado) [data-conta-ini]{display:none}
+  .topo-conta:not(.logado) .ic-pessoa{display:block}
+}
+@media (min-width:821px) and (max-width:1120px){.nav>a[href="#contato"]{display:none}.nav{gap:clamp(14px,1.8vw,22px)!important}}
+@media (min-width:821px) and (max-width:1000px){.topo-zap{width:38px;padding:0;justify-content:center;font-size:0;letter-spacing:0;gap:0}}
+.lx-grade>[hidden]{display:none!important}
+.lx-mais{grid-column:1/-1;justify-self:center;margin-top:8px}
+@media (max-width:820px){.lx-abre{height:170vh!important}}
+
+</style>
 </head>
 <body>
 <a class="pular" href="#app">Ir para o conteúdo</a>
@@ -2228,16 +2374,36 @@ html,body{background-color:var(--creme)}
     <div class="topo-acoes">
       <button type="button" class="topo-fav" data-fav-abrir aria-label="Seus favoritos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/><path d="M12 17.2s-2.6-1.6-2.6-3.4a1.4 1.4 0 0 1 2.6-.8 1.4 1.4 0 0 1 2.6.8c0 1.8-2.6 3.4-2.6 3.4z"/></svg><b data-fav-n hidden>0</b></button>
       <button type="button" class="topo-conta" data-conta-bt aria-label="Entrar ou criar conta"><svg class="ic-pessoa" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1.2-3.6 4.1-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg><span data-conta-ini>Entrar</span></button>
+      <a class="topo-zap" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar</a>
     </div>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Principal">
-      <a href="#imoveis">Imóveis</a>
+      <div class="nav-g" data-grupo="imoveis">
+        <a class="nav-pai" href="#imoveis">Imóveis<svg class="nav-seta" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></a>
+        <div class="nav-sub">
+          <a href="#busca" data-vt-fin="venda"><b>À venda</b><small>Casas, apartamentos e terrenos em Indaiatuba.</small></a>
+          <a href="#busca" data-vt-fin="locacao"><b>Para alugar</b><small>Para morar em Indaiatuba, com a garantia que couber para você.</small></a>
+          <a href="#internacional"><b>Fora do Brasil</b><small>Orlando, Miami e Portugal.</small></a>
+          <a href="#restrita"><b>Área restrita</b><small>Para quem prefere discrição.</small></a>
+        </div>
+      </div>
       <a href="#lancamentos">Lançamentos</a>
-      <a href="#proprietario">Anunciar meu imóvel</a>
-      <a href="#internacional">Fora do Brasil</a>
-      <a href="#processo">Como conduzimos</a>
-      <a href="#historia">Nossa história</a>
-      <a href="#equipe">Equipe</a>
+      <div class="nav-g" data-grupo="proprietario">
+        <a class="nav-pai" href="#proprietario">Anunciar meu imóvel<svg class="nav-seta" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></a>
+        <div class="nav-sub">
+          <a href="#proprietario"><b>Vender ou alugar</b><small>Avaliação gratuita e sem compromisso.</small></a>
+          <a href="#administracao"><b>Administração de locação</b><small>Alguém cuidando do seu imóvel alugado.</small></a>
+          <a href="#permuta"><b>Permuta</b><small>Trocar um imóvel por outro.</small></a>
+        </div>
+      </div>
+      <div class="nav-g nav-g--fim" data-grupo="quem">
+        <a class="nav-pai" href="#historia">Quem somos<svg class="nav-seta" viewBox="0 0 12 12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></a>
+        <div class="nav-sub nav-sub--passos">
+          <a href="#historia"><i>01</i><b>Nossa história</b><small>De onde a gente vem, nas palavras da Cris.</small></a>
+          <a href="#processo"><i>02</i><b>Como conduzimos</b><small>Etapa por etapa, o que acontece com você.</small></a>
+          <a href="#equipe"><i>03</i><b>Equipe</b><small>Quem cuida de cada parte, com nome e rosto.</small></a>
+        </div>
+      </div>
       <a href="#contato">Contato</a>
     </nav>
   </div>
@@ -2264,12 +2430,16 @@ html,body{background-color:var(--creme)}
         <p class="lede">Você está diante de uma das decisões mais importantes da sua vida. Aqui ela acontece no seu tempo, com quem está no mercado de Indaiatuba desde 2013.</p>
         <div class="actions">
           <a class="btn" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar no WhatsApp</a>
-          <a class="lnk" href="#imoveis">Ver imóveis disponíveis</a>
         </div>
       </div>
     </div>
     <p class="rolar">Role</p>
   </div>
+  <nav class="rumos" aria-label="Por onde começar">
+    <a href="#busca" data-vt-fin="venda"><span><b>Procuro um imóvel</b><small>Para comprar ou alugar</small></span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    <a href="#lancamentos"><span><b>Quero conhecer um lançamento</b><small>Só os que a gente recomenda</small></span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    <a href="#proprietario"><span><b>Quero vender ou alugar o meu</b><small>Avaliação gratuita</small></span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </nav>
   <div class="wrap" style="padding-block:14px"><p class="muted">A cena de fundo se move mais devagar que o texto conforme você desce, e acompanha de leve o movimento do mouse. Entra aqui um plano real da operação, com pessoas e não com fachada.</p></div>
 
   <!-- imóveis e lançamentos -->
@@ -2332,7 +2502,7 @@ html,body{background-color:var(--creme)}
   </div>
 
   <!-- sequência controlada pelo scroll -->
-  <div class="seq" id="seq" style="height:320vh">
+  <div class="seq" id="seq" style="height:230vh">
     <div class="seq-colado">
       <div class="seq-quadro com-foto" id="seq-quadro"><canvas class="seq-tela" id="seq-img" width="1600" height="1022" role="img" aria-label="Um aperto de mãos e a chave passando de uma mão para a outra"></canvas></div>
       <p class="seq-contador" id="seq-contador">quadro 1 de 37</p>
@@ -2372,7 +2542,7 @@ html,body{background-color:var(--creme)}
   </div>
 
   <!-- galeria horizontal -->
-  <div class="horiz" id="horiz" style="height:280vh">
+  <div class="horiz" id="horiz" style="height:200vh">
     <div class="horiz-colado">
       <div class="horiz-titulo stack col">
         <p class="eyebrow">Bastidores do cuidado</p>
@@ -2539,7 +2709,7 @@ html,body{background-color:var(--creme)}
         <p class="lede">Se você já se decepcionou antes, a desconfiança faz sentido. Só peço um voto de confiança.</p>
         <p>Ninguém vai te pressionar. Você vai enxergar cada etapa antes dela acontecer.</p>
         <p style="font-family:var(--display);font-size:var(--s-2);color:var(--tinta);margin-top:.4rem">Cris Maciel</p>
-        <div class="actions"><a class="btn" href="#contato"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar com a Cris Maciel</a><a class="lnk" href="#equipe">Conhecer quem vai te atender</a></div>
+        <div class="actions"><a class="btn" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar com a Cris Maciel</a><a class="lnk" href="#equipe">Conhecer quem vai te atender</a></div>
       </div>
       <figure class="shot r revela-img">
         <div class="shot-frame com-foto parallax" data-plano="0.06" style="--ar:1/1"><img loading="lazy" src="lx-media/emb-acfd955d309b.webp" alt="Retrato próximo da Cris Maciel"></div>
@@ -3390,7 +3560,7 @@ html,body{background-color:var(--creme)}
         <p class="eyebrow">Para quem tem um imóvel</p>
         <h1>Seu imóvel merece mais do que estar anunciado</h1>
         <p class="lede">Colocar o seu imóvel à venda é fácil. O difícil é passar por isso sem desgaste, sem visita perdida e sem surpresa no meio do caminho.</p>
-        <div class="actions"><a class="btn" href="#contato"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Falar sobre meu imóvel</a></div>
+        <div class="actions"><a class="btn" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20falar%20sobre%20o%20meu%20im%C3%B3vel." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Falar sobre meu imóvel</a></div>
       </div>
     </div>
   </div>
@@ -3472,7 +3642,7 @@ html,body{background-color:var(--creme)}
       </div>
       <div class="stack">
         <p>A avaliação é gratuita e não gera compromisso. A gente visita, analisa e te diz o valor realista, mesmo que você decida não anunciar com a gente.</p>
-        <div class="actions"><a class="btn btn--gold" href="#contato"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Falar sobre meu imóvel</a></div>
+        <div class="actions"><a class="btn btn--gold" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20falar%20sobre%20o%20meu%20im%C3%B3vel." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Falar sobre meu imóvel</a></div>
       </div>
     </div>
   </div>
@@ -3575,7 +3745,7 @@ html,body{background-color:var(--creme)}
   </nav>
 
   <!-- PORTUGAL -->
-  <section class="destino" id="portugal" data-nome="Portugal" style="height:520vh">
+  <section class="destino" id="portugal" data-nome="Portugal" style="height:340vh">
     <div class="destino-colado">
       <div class="destino-fundo com-foto"><img loading="lazy" src="lx-media/emb-5e3cd156fc24.webp" alt="Lisboa vista do alto no fim da tarde"><span></span></div>
       <div class="destino-veu"></div>
@@ -3602,7 +3772,7 @@ html,body{background-color:var(--creme)}
             <p>Você tira um número de contribuinte português, o NIF, que é o equivalente ao CPF de lá. A gente levanta a certidão do imóvel no registo predial e a caderneta predial, que mostram quem é o dono e o que pesa sobre o imóvel.</p>
             <p>Depois vem o contrato de promessa, o pagamento do imposto de transmissão e a escritura, assinada em cartório português. O registo final coloca o imóvel no seu nome.</p>
             <p>A Cris conduz cada etapa com o representante brasileiro em Portugal, e você acompanha por videochamada sem precisar estar lá em todas as fases.</p>
-            <div class="actions"><a class="btn btn--gold" href="#contato"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre Portugal</a></div>
+            <div class="actions"><a class="btn btn--gold" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar%20sobre%20im%C3%B3veis%20fora%20do%20Brasil." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre Portugal</a></div>
           </div>
                   <div class="lamina lamina--larga">
             <h2>Alguns imóveis em Portugal.</h2>
@@ -3621,7 +3791,7 @@ html,body{background-color:var(--creme)}
   </section>
 
   <!-- MIAMI -->
-  <section class="destino" id="miami" data-nome="Miami" style="height:520vh">
+  <section class="destino" id="miami" data-nome="Miami" style="height:340vh">
     <div class="destino-colado">
       <div class="destino-fundo com-foto"><img loading="lazy" src="lx-media/emb-f0264c0da074.jpg" alt="Miami vista da água ao anoitecer"><span></span></div>
       <div class="destino-veu"></div>
@@ -3648,7 +3818,7 @@ html,body{background-color:var(--creme)}
             <p>Estrangeiro compra imóvel nos Estados Unidos sem precisar de visto e sem precisar morar lá. A propriedade não depende da sua situação migratória.</p>
             <p>O dinheiro fica em conta de garantia, o escrow, até o fechamento. Uma empresa de título pesquisa a cadeia de propriedade e emite o seguro de título, que é a proteção contra qualquer problema anterior à sua compra. A escritura é registrada no condado.</p>
             <p>A gente também coloca na conta o que ninguém gosta de falar: taxa de condomínio, imposto anual sobre a propriedade e seguro, que na Flórida subiu bastante nos últimos anos.</p>
-            <div class="actions"><a class="btn btn--gold" href="#contato"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre Miami</a></div>
+            <div class="actions"><a class="btn btn--gold" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar%20sobre%20im%C3%B3veis%20fora%20do%20Brasil." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre Miami</a></div>
           </div>
                   <div class="lamina lamina--larga">
             <h2>Alguns imóveis em Miami.</h2>
@@ -3667,7 +3837,7 @@ html,body{background-color:var(--creme)}
   </section>
 
   <!-- ORLANDO -->
-  <section class="destino" id="orlando" data-nome="Orlando" style="height:520vh">
+  <section class="destino" id="orlando" data-nome="Orlando" style="height:340vh">
     <div class="destino-colado">
       <div class="destino-fundo com-foto"><img loading="lazy" src="lx-media/emb-5b3b54ecb6c7.webp" alt="Casa com piscina em Orlando ao anoitecer"><span></span></div>
       <div class="destino-veu"></div>
@@ -3694,7 +3864,7 @@ html,body{background-color:var(--creme)}
             <p>O caminho é o mesmo de Miami: escrow, pesquisa de título, seguro de título e registro no condado, sem exigência de visto.</p>
             <p>A diferença está no depois. A gente te apresenta a empresa de administração, explica como funciona a divisão de receita, a taxa de gestão, a limpeza entre hóspedes, a manutenção da piscina e a sazonalidade, que é real: alta temporada e baixa temporada mudam a conta do ano.</p>
             <p>Você recebe uma projeção honesta, com custos incluídos, e não uma promessa de rentabilidade.</p>
-            <div class="actions"><a class="btn btn--gold" href="#contato"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre Orlando</a></div>
+            <div class="actions"><a class="btn btn--gold" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar%20sobre%20im%C3%B3veis%20fora%20do%20Brasil." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre Orlando</a></div>
           </div>
                   <div class="lamina lamina--larga">
             <h2>Alguns imóveis em Orlando.</h2>
@@ -3752,7 +3922,7 @@ html,body{background-color:var(--creme)}
       <div class="stack">
         <p>A Cris conduz essa operação pessoalmente, com representantes brasileiros em Portugal, Miami e Orlando. A primeira conversa é online e não custa nada.</p>
         <div class="actions">
-          <a class="btn btn--gold" href="#contato"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre imóveis fora do Brasil</a>
+          <a class="btn btn--gold" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar%20sobre%20im%C3%B3veis%20fora%20do%20Brasil." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>Conversar sobre imóveis fora do Brasil</a>
           <a class="lnk" href="#internacional">Ver o portfólio internacional</a>
         </div>
       </div>
@@ -4160,22 +4330,12 @@ html,body{background-color:var(--creme)}
     </div>
     <div class="grade">
       <div>
-        <h4>Institucional</h4>
-        <ul>
-          <li><a href="#historia">Nossa história</a></li>
-          <li><a href="#processo">Como conduzimos uma decisão</a></li>
-          <li><a href="#equipe">Equipe</a></li>
-          <li><a href="#trabalhe">Trabalhe com a gente</a></li>
-        </ul>
-      </div>
-      <div>
         <h4>Imóveis</h4>
         <ul>
           <li><a href="#imoveis" data-vt-fin="venda">Imóveis à venda</a></li>
           <li><a href="#imoveis" data-vt-fin="locacao">Imóveis para alugar</a></li>
           <li><a href="#lancamentos">Lançamentos</a></li>
           <li><a href="#restrita">Área restrita</a></li>
-          <li><a href="#permuta">Permuta</a></li>
           <li><a href="#internacional">Fora do Brasil</a></li>
         </ul>
       </div>
@@ -4184,6 +4344,16 @@ html,body{background-color:var(--creme)}
         <ul>
           <li><a href="#proprietario">Anunciar meu imóvel</a></li>
           <li><a href="#administracao">Administração de locação</a></li>
+          <li><a href="#permuta">Permuta</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Quem somos</h4>
+        <ul>
+          <li><a href="#historia">Nossa história</a></li>
+          <li><a href="#processo">Como conduzimos uma decisão</a></li>
+          <li><a href="#equipe">Equipe</a></li>
+          <li><a href="#trabalhe">Trabalhe com a gente</a></li>
         </ul>
       </div>
       <div>
@@ -6016,6 +6186,7 @@ html,body{background-color:var(--creme)}
     var l=EMP.filter(function(e){return passa(e,F);}).sort(ordem);
     grade.innerHTML='';
     l.forEach(function(e,k){var c=cartao(e);c.style.animationDelay=(Math.min(k,8)*50)+'ms';grade.appendChild(c);});
+    if(window.innerWidth<=820 && l.length>6 && !lista.todos){[].slice.call(grade.children,6).forEach(function(c){c.hidden=true;});var mais=document.createElement('button');mais.type='button';mais.className='btn btn--ghost lx-mais';mais.textContent='Ver os outros '+(l.length-6)+' lançamentos';mais.addEventListener('click',function(){lista.todos=true;lista();});grade.appendChild(mais);}
     if(!l.length){grade.innerHTML='<div class="lx-vazio"><h3>Nenhum empreendimento com essa combinação.</h3><p>Tire um filtro, ou conte o que você procura: a gente conhece os mais de quarenta lançamentos da cidade.</p><a class="btn btn--gold" href="https://wa.me/5519992754241?text='+encodeURIComponent('Olá! Estou procurando um lançamento e gostaria de uma indicação.')+'" target="_blank" rel="noopener">Conversar no WhatsApp</a></div>';}
     cont.innerHTML=l.length+(l.length===1?' empreendimento':' empreendimentos')+'<small>'+(modo==='morar'?'com a leitura para quem vai morar':'com a leitura para quem vai investir')+'</small>';
     montaFiltros();
@@ -7916,5 +8087,119 @@ document.querySelectorAll('.fx-video video').forEach(function(v){v.addEventListe
 .conta-perfil-nota{font-size:.9rem;color:rgba(71,67,66,.82);margin:0 0 1em}
 .conta-perfil-acoes{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
 </style>
+<script id="caminho-js">
+/* O CAMINHO: menu por grupos, trilho e "a seguir" das páginas da casa,
+   marcador de capítulos da página inicial. Para tirar: apagar este script e style#caminho. */
+(function(){
+  'use strict';
+  var SETA='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+
+  /* de que entrada do menu cada página faz parte */
+  var GRUPO={imoveis:'imoveis',imovel:'imoveis',internacional:'imoveis',restrita:'imoveis','restrita-acesso':'imoveis','restrita-recebido':'imoveis','restrita-ficha':'imoveis',
+    proprietario:'proprietario',administracao:'proprietario',permuta:'proprietario',
+    historia:'quem',processo:'quem',equipe:'quem',corretor:'quem',trabalhe:'quem'};
+  var SOLTO={lancamentos:'#lancamentos','lancamento-ficha':'#lancamentos',contato:'#contato'};
+
+  /* sequências: a ordem em que as páginas se leem */
+  var TRILHOS=[
+    {nome:'Quem somos',numerado:true,pags:[
+      ['historia','Nossa história'],['processo','Como conduzimos'],['equipe','Equipe']],
+     seguir:{
+      historia:['processo','Como conduzimos','Etapa por etapa, o que acontece com você desde a primeira conversa até depois das chaves.'],
+      processo:['equipe','Equipe','Quem cuida de cada parte, com nome e rosto.'],
+      equipe:['contato','Vamos conversar','Do outro lado tem uma pessoa, e ela te leva a quem cuida do que você precisa.']}},
+    {nome:'Para proprietários',numerado:false,pags:[
+      ['proprietario','Vender ou alugar'],['administracao','Administração de locação'],['permuta','Permuta']]}
+  ];
+
+  function pagina(id){ return document.getElementById(id); }
+
+  /* ---------- trilho no alto e "a seguir" no fim ---------- */
+  TRILHOS.forEach(function(t){
+    t.pags.forEach(function(pg,ix){
+      var sec=pagina(pg[0]); if(!sec || sec.querySelector('.cam-trilho')) return;
+      var nav=document.createElement('nav'); nav.className='cam-trilho'; nav.setAttribute('aria-label',t.nome);
+      var h='<ol><li class="cam-nome" aria-hidden="true">'+t.nome+'</li>';
+      t.pags.forEach(function(o,k){
+        h+='<li><a href="#'+o[0]+'"'+(k===ix?' aria-current="page"':'')+'>'+(t.numerado?'<i>0'+(k+1)+'</i>':'')+o[1]+'</a></li>';
+      });
+      nav.innerHTML=h+'</ol>';
+      var primeiro=sec.firstElementChild;
+      if(primeiro && primeiro.nextSibling) sec.insertBefore(nav,primeiro.nextSibling); else sec.appendChild(nav);
+
+      [].forEach.call(sec.querySelectorAll('.migalhas'),function(m){ m.hidden=true; });
+      var prox=t.seguir && t.seguir[pg[0]];
+      if(prox){
+        var fim=document.createElement('nav'); fim.className='cam-seguir'; fim.setAttribute('aria-label','A seguir');
+        var passo=ix+2<=t.pags.length ? 'A seguir · 0'+(ix+2)+' de 0'+t.pags.length : 'Para terminar';
+        fim.innerHTML='<a href="#'+prox[0]+'"><span><span class="cam-rot">'+passo+'</span><strong><span>'+prox[1]+'</span></strong><em>'+prox[2]+'</em></span><span class="cam-bola">'+SETA+'</span></a>';
+        sec.appendChild(fim);
+      }
+    });
+  });
+
+  /* ---------- menu: marca a entrada da página atual e fecha o painel depois do clique ---------- */
+  var grupos=[].slice.call(document.querySelectorAll('.nav-g'));
+  var soltos=[].slice.call(document.querySelectorAll('.nav>a'));
+  function marca(){
+    var id=window.__paginaAtual || (location.hash||'#inicio').slice(1).split('?')[0];
+    var g=GRUPO[id];
+    grupos.forEach(function(el){ el.classList.toggle('ativo', el.getAttribute('data-grupo')===g); });
+    soltos.forEach(function(a){ a.classList.toggle('ativo', SOLTO[id]===a.getAttribute('href')); });
+    trilhoRail();
+  }
+  grupos.forEach(function(el){
+    el.addEventListener('click',function(e){
+      if(!e.target.closest('a')) return;
+      el.classList.add('fechado');
+      if(document.activeElement && el.contains(document.activeElement)) document.activeElement.blur();
+    });
+    el.addEventListener('mouseleave',function(){ el.classList.remove('fechado'); });
+    el.addEventListener('keydown',function(e){ if(e.key==='Escape'){ el.classList.add('fechado'); var p=el.querySelector('.nav-pai'); if(p) p.focus(); } });
+    el.addEventListener('focusin',function(e){ if(e.target.classList.contains('nav-pai') && e.relatedTarget && !el.contains(e.relatedTarget)) el.classList.remove('fechado'); });
+  });
+
+  /* ---------- marcador de capítulos da página inicial ---------- */
+  var inicio=pagina('inicio'), rail=null, caps=[];
+  var NOMES=[['.band--rule','Imóveis'],['#fixa','O que muda para você'],['#seq','A entrega da chave'],['.video-quem, [data-quem], .band--creme:has(a[href="#historia"])','Quem conduz'],
+             ['.eq-faixa','A equipe'],['.horiz','Bastidores'],['.vozes, .vozes-palco','Quem já passou por aqui'],['.band--fecho','Por onde começar']];
+  function montaRail(){
+    if(!inicio || rail) return;
+    rail=document.createElement('nav'); rail.className='cam-rail'; rail.setAttribute('aria-label','Nesta página');
+    NOMES.forEach(function(n){
+      var el=null; try{ el=inicio.querySelector(n[0]); }catch(e){}
+      if(!el) return;
+      while(el.parentNode && el.parentNode!==inicio) el=el.parentNode;
+      if(caps.some(function(c){ return c.el===el; })) return;
+      var b=document.createElement('button'); b.type='button'; b.innerHTML='<span>'+n[1]+'</span>'; b.setAttribute('aria-label','Ir para: '+n[1]);
+      b.addEventListener('click',function(){ var y=el.getBoundingClientRect().top+scrollY-70; window.scrollTo({top:y,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}); });
+      rail.appendChild(b); caps.push({el:el,b:b});
+    });
+    document.body.appendChild(rail);
+  }
+  var agendado=false;
+  function trilhoRail(){
+    if(!rail) return;
+    var naInicio=inicio && !inicio.hidden;
+    if(!naInicio || !caps.length){ rail.classList.remove('visivel'); return; }
+    var meio=innerHeight*.45, atual=-1;
+    caps.forEach(function(c,k){ if(c.el.getBoundingClientRect().top<=meio) atual=k; });
+    var fim=inicio.getBoundingClientRect().bottom<innerHeight*.5;
+    rail.classList.toggle('visivel', atual>=0 && !fim);
+    caps.forEach(function(c,k){ c.b.classList.toggle('atual',k===atual); c.b.classList.toggle('proximo',k===atual+1); if(k===atual) c.b.setAttribute('aria-current','true'); else c.b.removeAttribute('aria-current'); });
+  }
+  function aoRolar(){ if(agendado) return; agendado=true; requestAnimationFrame(function(){ agendado=false; trilhoRail(); }); }
+
+  function comeca(){
+    montaRail(); marca();
+    addEventListener('scroll',aoRolar,{passive:true}); addEventListener('resize',aoRolar);
+    var app=document.getElementById('app');
+    if(app && 'MutationObserver' in window) new MutationObserver(marca).observe(app,{attributes:true,attributeFilter:['hidden'],subtree:true});
+    addEventListener('hashchange',marca);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',comeca); else comeca();
+})();
+
+</script>
 </body>
 </html>
