@@ -2280,6 +2280,7 @@ html,body{background-color:var(--creme)}
         <h2 style="font-size:var(--s-3)" class="monta">Imóveis e lançamentos em Indaiatuba.</h2>
       </div>
       <div class="destaques r"><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda do C2S</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda do C2S</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article><article class="cartao"><div class="shot-frame"><span>Imóvel em destaque · foto vinda do C2S</span></div><a class="ver" href="#imovel" aria-label="Ver imóvel"><span>Ver imóvel</span></a><div class="corpo"><b>Título do imóvel</b><small>Bairro · dormitórios · área</small><small>Valor</small></div></article></div>
+      <p class="ct-porque" id="ct-destaques-porque" hidden>Escolhidos pelo que você tem olhado no site. <a href="#conta" data-porque>Por que estes?</a></p>
       <div class="actions">
         <a class="btn" href="#busca" data-vt-fin="venda">Imóveis à venda</a>
         <a class="btn btn--ghost" href="#busca" data-vt-fin="locacao">Imóveis para alugar</a>
@@ -2673,9 +2674,10 @@ html,body{background-color:var(--creme)}
       <div class="ct-barra-dir">
         <button type="button" class="ct-salvos-bt" data-salvos aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.2 4.2 0 0 1 12 7.2 4.2 4.2 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg>Salvos <b data-n-salvos>0</b></button>
         <button type="button" class="ct-limpar" data-limpar hidden>Limpar filtros</button>
-        <label class="ct-ordem"><span>Ordenar</span><select data-f="ordem"><option value="recentes">Mais recentes</option><option value="menor">Menor valor</option><option value="maior">Maior valor</option><option value="area">Maior área</option></select></label>
+        <label class="ct-ordem"><span>Ordenar</span><select data-f="ordem"><option value="parati">Para você</option><option value="recentes">Mais recentes</option><option value="menor">Menor valor</option><option value="maior">Maior valor</option><option value="area">Maior área</option></select></label>
       </div>
     </div>
+    <p class="ct-porque" id="ct-porque" hidden>Em primeiro lugar, os imóveis mais parecidos com os que você tem olhado. <a href="#conta" data-porque>Por que estes?</a></p>
     <div class="ct-grade" id="ct-grade"></div>
     <div class="ct-vazio" id="ct-vazio" hidden>
       <h2>Nenhum imóvel com esses filtros.</h2>
@@ -4101,6 +4103,12 @@ html,body{background-color:var(--creme)}
         <a class="btn btn--gold" data-fav-wa href="https://wa.me/5519992754241" target="_blank" rel="noopener">Quero visitar estes</a>
         <span>A gente monta a agenda de visitas com você pelo WhatsApp.</span>
       </div>
+      <div class="conta-perfil" id="conta-perfil" data-perfil-box>
+        <h2>O que o site entendeu da sua busca</h2>
+        <p class="conta-perfil-frase" data-perfil-frase></p>
+        <p class="conta-perfil-nota" data-perfil-nota></p>
+        <div class="conta-perfil-acoes" data-perfil-acoes></div>
+      </div>
       <div class="conta-dados" data-conta-dados hidden>
         <p class="eyebrow">Seus dados</p>
         <dl><div><dt>Nome</dt><dd data-conta-campo="nome"></dd></div><div><dt>E-mail</dt><dd data-conta-campo="email"></dd></div><div><dt>WhatsApp</dt><dd data-conta-campo="whats"></dd></div></dl>
@@ -4122,6 +4130,7 @@ html,body{background-color:var(--creme)}
       <p>Quando você preenche um formulário ou fala com a gente pelo WhatsApp, a gente guarda o seu nome, o seu telefone e o que você contou sobre o que procura. Esses dados servem para um corretor entrar em contato e conduzir a sua conversa, e para mais nada.</p>
       <p>Eles ficam no nosso sistema de atendimento e não são vendidos nem cedidos a terceiros. Você pode pedir para ver, corrigir ou apagar os seus dados a qualquer momento, pelo mesmo canal em que falou com a gente.</p>
       <p>O site usa cookies para medir o uso das páginas e melhorar a experiência, só se você aceitar no aviso que aparece na primeira visita. Se recusar, nada é medido.</p>
+      <p>Se você aceitar, o site também lembra os imóveis que você abre e salva e os filtros que usa, para mostrar primeiro os que combinam com a sua busca. Essa lembrança fica só no seu aparelho: não é enviada para a gente nem para ninguém. Em Minha conta você vê o que o site entendeu, pode apagar tudo e pode pedir para o site não personalizar mais. O que não é usado há noventa dias é apagado sozinho.</p>
       <p class="muted">Texto provisório, escrito para o protótipo. Antes da publicação ele precisa passar por revisão jurídica, porque a Lei Geral de Proteção de Dados exige dizer com precisão quais dados são coletados, por quanto tempo ficam guardados, com quem são compartilhados e como a pessoa exerce os direitos dela.</p>
     </div>
   </div>
@@ -4133,7 +4142,7 @@ html,body{background-color:var(--creme)}
   <a class="flut flut--zap" id="btn-zap" href="https://wa.me/5519992754241?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20Cris%20Maciel%20e%20gostaria%20de%20conversar." target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.2-.5L3 21l1.7-5.1A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg><span>Conversar</span></a>
 </div>
 <div class="aviso" id="aviso" hidden>
-  <span>Usamos cookies só para medir o uso do site, e só se você permitir. <a href="#privacidade">Saiba mais</a></span>
+  <span>Com a sua permissão, o site mede o uso das páginas e lembra o que você procura, para mostrar primeiro os imóveis que combinam com você. <a href="#privacidade">Saiba mais</a></span>
   <span class="aviso-botoes"><button type="button" id="aviso-nao" class="aviso-sec">Recusar</button><button type="button" id="aviso-ok">Aceitar</button></span>
 </div>
 
@@ -4751,6 +4760,7 @@ html,body{background-color:var(--creme)}
         aviso.classList.remove('visivel');
         try{ localStorage.setItem('cm-cookies', v); }catch(e){}
         if(v === 'aceito' && window.__cmLigarMedicao) window.__cmLigarMedicao();
+        if(window.CM_CATALOGO && CM_CATALOGO.reordena) CM_CATALOGO.reordena();
         setTimeout(function(){ aviso.hidden = true; }, 500);
       };
       document.getElementById('aviso-ok').addEventListener('click', function(){ decidir('aceito'); });
@@ -6971,7 +6981,7 @@ function carrega(){if(pedido)return;pedido=true;
   var sc=document.createElement('script');sc.src='lx-media/seq/chave.js';sc.async=true;document.head.appendChild(sc);}
 var pend=false;addEventListener('scroll',function(){if(pend)return;pend=true;requestAnimationFrame(function(){pend=false;passo();});},{passive:true});
 addEventListener('hashchange',function(){setTimeout(passo,300);});addEventListener('load',function(){setTimeout(carrega,1500);});passo();
-})();</script><script id="catalogo-js">
+})();</script><script src="lx-media/perfil.js"></script><script id="catalogo-js">
 /* ===================================================================
    CATÁLOGO DE IMÓVEIS
    Uma lista de imóveis, uma busca com filtros, a ficha de cada imóvel
@@ -7103,7 +7113,7 @@ function exemplos(){
       pagina:'imovel/EX0001/index.html'}]);
 }
 var IMOVEIS=[], PORCOD={}, BAIRROS={};
-function carregar(lista){ IMOVEIS=lista; PORCOD={}; IMOVEIS.forEach(function(i){ PORCOD[i.cod]=i; }); montaOpcoes(); lista_(); destaques(); }
+function carregar(lista){ IMOVEIS=lista; PORCOD={}; IMOVEIS.forEach(function(i){ PORCOD[i.cod]=i; }); montaOpcoes(); ordemInicial(); lista_(); destaques(); }
 
 /* ---------- utilidades ---------- */
 function brl(n){ return 'R$ '+Math.round(n).toLocaleString('pt-BR'); }
@@ -7194,6 +7204,7 @@ function passa(i){
 }
 function ordena(l){
   var o=F.ordem;
+  if(o==='parati' && window.CMPerfil){ var r=CMPerfil.retrato(); if(r){ var nt={}; l.forEach(function(i){ nt[i.cod]=CMPerfil.nota(i,r); }); return l.slice().sort(function(a,b){ return nt[b.cod]-nt[a.cod] || (b.data||'').localeCompare(a.data||''); }); } o='recentes'; }
   return l.slice().sort(function(a,b){
     if(o==='menor') return a.preco-b.preco; if(o==='maior') return b.preco-a.preco; if(o==='area') return b.area-a.area;
     return (b.data||'').localeCompare(a.data||'');
@@ -7208,6 +7219,8 @@ function lista_(){
   var conta=document.getElementById('ct-conta');
   conta.innerHTML=l.length? plural(l.length,'imóvel','imóveis')+' <small>'+(F.cod?'pelo código':F.salvos?'salvos':F.fin==='locacao'?'para alugar':'à venda')+'</small>' : '';
   document.getElementById('ct-vazio').hidden = l.length>0;
+  var temR=!!(window.CMPerfil && CMPerfil.retrato()), pq=document.getElementById('ct-porque'); if(pq) pq.hidden=!(F.ordem==='parati' && temR);
+  var op=pag.querySelector('[data-f="ordem"] option[value="parati"]'); if(op){ op.hidden=!temR; op.disabled=!temR; }
   var mais=document.getElementById('ct-mais-res'); mais.hidden = l.length<=mostrando;
   document.getElementById('ct-mostrando').textContent='Mostrando '+Math.min(mostrando,l.length)+' de '+l.length;
   pag.querySelectorAll('.ct-limpar[data-limpar]').forEach(function(b){ b.hidden=!temFiltro(); });
@@ -7216,10 +7229,20 @@ function lista_(){
   pag.querySelectorAll('[data-wa-busca]').forEach(function(a){ a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(txt); });
 }
 function refaz(){ mostrando=POR_PAG; lista_(); }
+/* o que a pessoa filtra ajuda a entender o que ela procura (lx-media/perfil.js) */
+var ordemEscolhida=false;
+function aprende(){ if(window.CMPerfil) CMPerfil.registra('filtro',{fin:F.fin,tipo:F.tipo,bairro:F.bairro,dorm:F.dorm,max:F.max}); }
+function ordemInicial(){
+  if(ordemEscolhida || !window.CMPerfil || !CMPerfil.retrato()) return;
+  F.ordem='parati'; var s=sel('ordem'); if(s) s.value='parati';
+}
 if(pag){
   pag.addEventListener('change',function(e){
     var k=e.target.getAttribute&&e.target.getAttribute('data-f'); if(!k) return;
-    var v=e.target.value; F[k]=(['dorm','max','suites','vagas','area'].indexOf(k)>=0)?parseInt(v,10)||0:v; refaz();
+    var v=e.target.value; F[k]=(['dorm','max','suites','vagas','area'].indexOf(k)>=0)?parseInt(v,10)||0:v;
+    if(k==='ordem') ordemEscolhida=true;
+    if(['tipo','dorm','max'].indexOf(k)>=0) aprende();
+    refaz();
   });
   pag.addEventListener('input',function(e){
     var k=e.target.getAttribute('data-f');
@@ -7236,7 +7259,7 @@ if(pag){
     ul.innerHTML=l.map(function(b,n){ return '<li role="option" id="ct-sug-'+n+'" data-bairro="'+esc(b)+'">'+esc(b)+'<small>'+BAIRROS[b]+'</small></li>'; }).join('');
     ul.hidden=false; inp.setAttribute('aria-expanded','true');
   }
-  function escolhe(inp,b){ inp.value=b; F.bairro=b; var ul=document.getElementById('ct-sug'); ul.hidden=true; inp.setAttribute('aria-expanded','false'); refaz(); }
+  function escolhe(inp,b){ inp.value=b; F.bairro=b; var ul=document.getElementById('ct-sug'); ul.hidden=true; inp.setAttribute('aria-expanded','false'); aprende(); refaz(); }
   pag.addEventListener('focusin',function(e){ if(e.target.getAttribute && e.target.getAttribute('data-f')==='bairro') sugere(e.target); });
   pag.addEventListener('focusout',function(e){ if(e.target.getAttribute && e.target.getAttribute('data-f')==='bairro') setTimeout(function(){ var ul=document.getElementById('ct-sug'); if(ul){ ul.hidden=true; e.target.setAttribute('aria-expanded','false'); } },150); });
   pag.addEventListener('keydown',function(e){
@@ -7265,6 +7288,7 @@ document.addEventListener('click',function(e){
   var b=e.target.closest&&e.target.closest('[data-salvar]'); if(!b) return;
   e.preventDefault(); e.stopPropagation();
   var c=b.getAttribute('data-salvar');
+  if(window.CMPerfil && PORCOD[c]){ var ia=b.getAttribute('aria-pressed')==='true'; CMPerfil.registra(ia?'tirar':'salvar',PORCOD[c]); }
   if(window.CMFav){ CMFav.alterna('imovel', c); return; }
   if(SALVOS[c]) delete SALVOS[c]; else SALVOS[c]=1; guardaSalvos();
   document.querySelectorAll('[data-salvar="'+c+'"]').forEach(function(x){ x.setAttribute('aria-pressed',SALVOS[c]?'true':'false'); });
@@ -7289,6 +7313,7 @@ function ficha(cod){
   }
   var i=PORCOD[cod]||atual||IMOVEIS.filter(function(x){return x.destaque;})[0]||IMOVEIS[0]; if(!i) return; atual=i;
   if(i.parcial) completa(i);
+  if(window.CMPerfil){ var vc=i.cod; setTimeout(function(){ if(atual&&atual.cod===vc&&location.hash==='#imovel') CMPerfil.registra('ver',atual); },1500); }
   var fs=i.fotos, n=i.nfotos||fs.length;
   var gal='<div class="ct-galeria'+(n<3?' ct-galeria--1':'')+'">'+fs.slice(0,n<3?1:5).map(function(f,k){return '<button type="button" data-ct-foto="'+k+'" aria-label="Ampliar foto '+(k+1)+' de '+n+'"><i style="background-image:url(\''+esc(f)+'\')"></i></button>';}).join('')+
     (n>1?'<span class="ct-todas">'+IC.fotos+'Ver as '+n+' fotos</span>':'')+'</div>';
@@ -7333,8 +7358,14 @@ function ficha(cod){
     '</aside></div>';
   var par=document.getElementById('ct-parecidos');
   if(par){
-    var outros=IMOVEIS.filter(function(x){return x.cod!==i.cod && x.fin===i.fin;}).map(function(x){
-      var s=(x.tipo===i.tipo?3:0)+(x.bairro===i.bairro?2:0)-Math.abs(x.preco-i.preco)/Math.max(i.preco,1); return [s,x];
+    /* parecidos: mesmo tipo e bairro, valor perto deste (nunca o dobro nem a metade, se houver opção)
+       e, se o site já entende o que a pessoa procura, isso também conta */
+    var rp=window.CMPerfil?CMPerfil.retrato():null;
+    var cand=IMOVEIS.filter(function(x){return x.cod!==i.cod && x.fin===i.fin;});
+    var perto=cand.filter(function(x){ return !i.preco || !x.preco || (x.preco<=i.preco*2 && x.preco>=i.preco/2); });
+    if(perto.length>=3) cand=perto;
+    var outros=cand.map(function(x){
+      var s=(x.tipo===i.tipo?3:0)+(x.bairro===i.bairro?2:0)-Math.abs(x.preco-i.preco)/Math.max(i.preco,1)+(rp?2*Math.max(0,CMPerfil.nota(x,rp)):0); return [s,x];
     }).sort(function(a,b){return b[0]-a[0];}).slice(0,3).map(function(p){return p[1];});
     par.innerHTML=outros.length?'<h2>Imóveis parecidos</h2><div class="ct-grade ct-grade--3"></div>':'';
     var g=par.querySelector('.ct-grade'); if(g) outros.forEach(function(x){ g.appendChild(cartao(x)); });
@@ -7368,9 +7399,22 @@ window.addEventListener('hashchange',fecha);
 /* ---------- destaques da página inicial ---------- */
 function destaques(){
   var d=document.querySelector('#inicio .destaques'); if(!d) return;
-  var l=IMOVEIS.filter(function(i){return i.destaque;}); if(l.length<3) l=l.concat(ordena(IMOVEIS).filter(function(i){return !i.destaque;})).slice(0,3); else l=l.slice(0,3);
+  var l, r=window.CMPerfil?CMPerfil.retrato():null, pq=document.getElementById('ct-destaques-porque');
+  if(r){
+    /* para quem o site já conhece: os três que mais combinam com o que a pessoa procura */
+    l=IMOVEIS.map(function(i){ return [CMPerfil.nota(i,r),i]; }).filter(function(p){ return p[0]>0; })
+      .sort(function(a,b){ return b[0]-a[0]; }).map(function(p){ return p[1]; });
+    /* o que a pessoa ainda não abriu vem antes; o que ela já viu só entra se faltar opção */
+    var novos=l.filter(function(i){ return !r.vistos[i.cod]; });
+    l=(novos.length>=3?novos:novos.concat(l.filter(function(i){ return r.vistos[i.cod]; }))).slice(0,3);
+  }
+  var meu=!!(l&&l.length===3);
+  if(!meu){ l=IMOVEIS.filter(function(i){return i.destaque;}); if(l.length<3) l=l.concat(ordena(IMOVEIS).filter(function(i){return !i.destaque;})).slice(0,3); else l=l.slice(0,3); }
+  if(pq) pq.hidden=!meu;
   d.className='destaques ct-grade ct-grade--3'; d.innerHTML=''; l.forEach(function(i){ d.appendChild(cartao(i)); });
 }
+/* quando o retrato muda, a página inicial se refaz por trás, sem mexer enquanto a pessoa está nela */
+document.addEventListener('cm-perfil',function(){ var h=document.getElementById('inicio'); if(IMOVEIS.length && (!h || h.hidden)) destaques(); });
 
 /* ---------- começa ---------- */
 /* no site publicado: tenta a lista real em /api/imoveis (lista gerada pelo GitHub a partir do C2S).
@@ -7406,6 +7450,8 @@ function completa(i){
 function inicia(){ var mf=/[?&]fin=(venda|locacao)/.exec(location.search); if(mf) F.fin=mf[1]; API=apiEndereco(); if(API) daApi(); else { carregar(exemplos()); if(location.hash==='#imovel') ficha(codDoEndereco()||undefined); } }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inicia); else inicia();
 window.CM_CATALOGO={carregar:carregar,deKenlo:deKenlo,
+  /* chamado quando a pessoa liga, desliga ou apaga o histórico em Minha conta */
+  reordena:function(){ var tem=!!(window.CMPerfil&&CMPerfil.retrato()); if(!ordemEscolhida||(!tem&&F.ordem==='parati')){ F.ordem=tem?'parati':'recentes'; var s=sel('ordem'); if(s) s.value=F.ordem; } lista_(); destaques(); },
   info:function(cod){ var i=PORCOD[cod]; if(!i) return null; return {titulo:i.titulo, onde:onde(i), preco:i.preco?brl(i.preco)+(i.fin==='locacao'?' /mês':''):'Consulte', foto:i.fotos[0]?"url('"+i.fotos[0]+"')":'', link:linkImovel(i), interno:!paginaPropria(i), selo:i.fin==='locacao'?'Aluguel':'Venda'}; },
   salvos:function(mapa){ SALVOS=mapa||{}; guardaSalvos(); document.querySelectorAll('[data-salvar]').forEach(function(x){ x.setAttribute('aria-pressed',SALVOS[x.getAttribute('data-salvar')]?'true':'false'); }); document.querySelectorAll('[data-n-salvos]').forEach(function(n){ n.textContent=nSalvos(); }); if(F.salvos) lista_(); },
   abrir:function(cod){ ficha(cod); if(window.__navegar) window.__navegar('imovel',true,'?imovel='+encodeURIComponent(cod)); }};
@@ -7821,5 +7867,54 @@ document.querySelectorAll('.fx-video video').forEach(function(v){v.addEventListe
   addEventListener('load',function(){ setTimeout(atualiza,400); });
 })();
 </script>
+<script id="perfil-ui">
+/* Minha conta: o que o site entendeu da busca (lx-media/perfil.js), com apagar e desligar. */
+(function(){
+  var box=document.getElementById('conta-perfil'); if(!box) return;
+  function monta(){
+    var P=window.CMPerfil; if(!P){ box.hidden=true; return; }
+    var fr=box.querySelector('[data-perfil-frase]'), nt=box.querySelector('[data-perfil-nota]'), ac=box.querySelector('[data-perfil-acoes]');
+    box.hidden=false;
+    if(P.desligado()){
+      fr.textContent='Você pediu para o site não personalizar a sua busca.';
+      nt.textContent='Os imóveis aparecem na ordem de sempre, e nada do que você olha fica guardado.';
+      ac.innerHTML='<button type="button" class="lnk" data-perfil="ligar">Voltar a personalizar</button>';
+    } else if(!P.ligado()){
+      fr.textContent='O site ainda não lembra o que você procura.';
+      nt.textContent='Com a sua permissão, ele passa a mostrar primeiro os imóveis parecidos com os que você abre e salva. Isso fica só neste aparelho e ninguém da equipe vê.';
+      ac.innerHTML='<button type="button" class="btn btn--ghost" data-perfil="ligar">Permitir</button>';
+    } else if(!P.retrato()){
+      fr.textContent='Ainda é cedo para entender o que você procura.';
+      nt.textContent='Abra ou salve alguns imóveis e o site passa a mostrar primeiro os que combinam com você. Isso fica só neste aparelho e ninguém da equipe vê.';
+      ac.innerHTML='<button type="button" class="lnk" data-perfil="desligar">Não quero que o site personalize</button>';
+    } else {
+      fr.textContent=P.frase();
+      nt.textContent='Por isso os imóveis mais parecidos com esses aparecem primeiro na página inicial e na lista. Isso fica só neste aparelho e ninguém da equipe vê.';
+      ac.innerHTML='<button type="button" class="lnk" data-perfil="apagar">Apagar o que o site aprendeu</button><button type="button" class="lnk" data-perfil="desligar">Não quero que o site personalize</button>';
+    }
+  }
+  box.addEventListener('click',function(e){
+    var b=e.target.closest('[data-perfil]'); if(!b||!window.CMPerfil) return;
+    var a=b.getAttribute('data-perfil');
+    if(a==='apagar') CMPerfil.apaga(); else if(a==='desligar') CMPerfil.desliga(true); else if(a==='ligar') CMPerfil.desliga(false);
+    if(window.CM_CATALOGO&&CM_CATALOGO.reordena) CM_CATALOGO.reordena();
+    monta();
+  });
+  document.addEventListener('cm-perfil',function(){ if(location.hash==='#conta') monta(); });
+  window.addEventListener('hashchange',function(){ if(location.hash==='#conta') monta(); });
+  document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('[data-porque]')) setTimeout(function(){ box.scrollIntoView({block:'center'}); },650); });
+  monta();
+})();
+</script>
+<style id="perfil-css">
+.ct-porque{margin:0 0 18px;font-size:.88rem;color:rgba(71,67,66,.82)}
+#inicio .ct-porque{margin:-6px 0 0}
+.ct-porque a{color:var(--ouro-texto,#8A6316);text-underline-offset:3px}
+.conta-perfil{margin-top:clamp(36px,5vw,56px);padding-top:clamp(24px,3vw,32px);border-top:1px solid rgba(71,67,66,.14);max-width:640px}
+.conta-perfil h2{font-family:var(--display);font-weight:400;font-size:clamp(1.3rem,2.4vw,1.7rem);margin:0 0 .6em}
+.conta-perfil-frase{font-size:1.05rem;margin:0 0 .5em}
+.conta-perfil-nota{font-size:.9rem;color:rgba(71,67,66,.82);margin:0 0 1em}
+.conta-perfil-acoes{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+</style>
 </body>
 </html>

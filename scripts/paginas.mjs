@@ -233,6 +233,8 @@ ${sem.length ? `<section class="semelhantes"><div class="in"><h2>Outros imóveis
   <div class="caixa-nav"><button type="button" data-ir="-1" aria-label="Foto anterior">←</button><button type="button" data-ir="1" aria-label="Próxima foto">→</button></div>
 </div>
 <script type="application/json" id="fotos">${JSON.stringify(fotos).replace(/</g, "\\u003c")}</script>
+<script type="application/json" id="cm-imovel">${JSON.stringify({ cod: i.cod, fin: i.fin, tipo: i.tipo || "", bairro: i.bairro || "", preco: i.preco || 0, dorm: i.dorm || 0, vagas: i.vagas || 0, area: i.area || 0 }).replace(/</g, "\\u003c")}</script>
+<script src="${BASE}lx-media/perfil.js" defer></script>
 <script src="${BASE}lx-media/imovel.js" defer></script>
 </body>
 </html>
