@@ -40,9 +40,9 @@ const I = {
 };
 
 // quem tem perfil no site (página Equipe); os outros aparecem sem link
-const PERFIS = ["cris", "enzo", "sandra", "adriana", "aline", "ana-jamile", "anderson", "cynthia", "denis", "felipe", "flavia",
+const PERFIS = ["cris", "enzo", "sandra", "adriana", "aline", "ana-jamile", "anderson", "flavia",
   "josiane", "karen", "lazaro", "monica", "vanessa", "katia", "ana-flavia", "amanda"];
-const ELES = ["enzo", "anderson", "denis", "felipe", "lazaro"];
+const ELES = ["enzo", "anderson", "lazaro"];
 const temPerfil = (nome) => PERFIS.includes(slug(nome));
 const nomeComLink = (nome) => temPerfil(nome) ? `<a class="perfil" href="${BASE}?c=${slug(nome)}#corretor">${esc(nome)}</a>` : esc(nome);
 

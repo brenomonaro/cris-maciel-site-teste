@@ -10,7 +10,7 @@
 const BASE = "https://crm.c2sapp.com";
 
 // nomes da página Equipe, na grafia do site
-const EQUIPE = ["Cris", "Enzo", "Sandra", "Adriana", "Aline", "Ana Jamile", "Anderson", "Cynthia", "Denis", "Felipe", "Flávia",
+const EQUIPE = ["Cris", "Enzo", "Sandra", "Adriana", "Aline", "Ana Jamile", "Anderson", "Flávia",
   "Josiane", "Karen", "Lázaro", "Mônica", "Vanessa", "Kátia", "Ana Flávia", "Amanda"];
 // quem nunca aparece no site, mesmo que esteja ligado a um imóvel no CRM
 const NUNCA = ["alessandra"];
